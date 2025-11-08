@@ -22,8 +22,8 @@ export function ArticleSummary({ content }: { content: string }) {
       console.error('Failed to summarize article:', error);
       toast({
         variant: "destructive",
-        title: "Summarization Failed",
-        description: "There was an error while generating the summary. Please try again later.",
+        title: "সংক্ষিপ্তকরণ ব্যর্থ হয়েছে",
+        description: "সারাংশ তৈরি করার সময় একটি ত্রুটি ঘটেছে। অনুগ্রহ করে পরে আবার চেষ্টা করুন।",
       });
     } finally {
       setIsLoading(false);
@@ -38,14 +38,14 @@ export function ArticleSummary({ content }: { content: string }) {
         ) : (
           <Sparkles className="mr-2 h-4 w-4 text-primary" />
         )}
-        Summarize with AI
+        AI দিয়ে সংক্ষেপ করুন
       </Button>
       {isLoading && (
          <Card>
             <CardHeader>
                 <CardTitle className="flex items-center text-lg font-headline">
                     <Sparkles className="mr-2 h-5 w-5 text-primary"/>
-                    Generating Summary...
+                    সারাংশ তৈরি করা হচ্ছে...
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
@@ -61,7 +61,7 @@ export function ArticleSummary({ content }: { content: string }) {
           <CardHeader>
             <CardTitle className="flex items-center text-lg font-headline text-primary">
                 <Sparkles className="mr-2 h-5 w-5"/>
-                AI Summary
+                AI সারাংশ
             </CardTitle>
           </CardHeader>
           <CardContent>

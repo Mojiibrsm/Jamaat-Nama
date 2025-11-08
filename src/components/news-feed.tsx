@@ -6,15 +6,15 @@ import { ArticleCard } from '@/components/article-card';
 import type { Article } from '@/lib/data';
 import { Search } from 'lucide-react';
 
-const categories = ['All', 'Politics', 'Technology', 'World', 'Sports', 'Business'];
+const categories = ['সব', 'রাজনীতি', 'প্রযুক্তি', 'বিশ্ব', 'খেলা', 'ব্যবসা'];
 
 export function NewsFeed({ articles }: { articles: Article[] }) {
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState('সব');
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredArticles = useMemo(() => {
     return articles.filter(article => {
-      const matchesCategory = selectedCategory === 'All' || article.category === selectedCategory;
+      const matchesCategory = selectedCategory === 'সব' || article.category === selectedCategory;
       const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) || article.content.toLowerCase().includes(searchTerm.toLowerCase());
       return matchesCategory && matchesSearch;
     });
@@ -26,7 +26,7 @@ export function NewsFeed({ articles }: { articles: Article[] }) {
         <div className="relative w-full md:max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
           <Input 
-            placeholder="Search articles..."
+            placeholder="খবর খুঁজুন..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10"
@@ -52,8 +52,8 @@ export function NewsFeed({ articles }: { articles: Article[] }) {
         </div>
       ) : (
         <div className="text-center py-16">
-            <h2 className="text-2xl font-headline font-semibold">No Articles Found</h2>
-            <p className="text-muted-foreground mt-2">Try adjusting your search or filter.</p>
+            <h2 className="text-2xl font-headline font-semibold">কোনো খবর পাওয়া যায়নি</h2>
+            <p className="text-muted-foreground mt-2">আপনার অনুসন্ধান বা ফিল্টার পরিবর্তন করে দেখুন।</p>
         </div>
       )}
     </div>

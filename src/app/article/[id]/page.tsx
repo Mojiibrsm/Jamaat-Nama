@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
         }
     }
     return {
-        title: `${article.title} | Sangbad Mimangsha`,
+        title: `${article.title} | Jamaat Nama`,
         description: article.content.substring(0, 150)
     }
 }

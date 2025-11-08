@@ -4,7 +4,7 @@ export type Article = {
   id: string;
   title: string;
   publicationDate: string;
-  category: 'Politics' | 'Technology' | 'World' | 'Sports' | 'Business';
+  category: 'রাজনীতি' | 'প্রযুক্তি' | 'বিশ্ব' | 'খেলা' | 'ব্যবসা';
   content: string;
   imageUrl: string;
   imageHint: string;
@@ -28,62 +28,62 @@ const getImage = (id: string) => {
 export const articles: Article[] = [
   {
     id: '1',
-    title: 'Global Leaders Summit Addresses Climate Change',
+    title: 'জলবায়ু পরিবর্তন মোকাবেলায় বিশ্ব নেতাদের শীর্ষ সম্মেলন',
     publicationDate: '2024-07-21T10:00:00Z',
-    category: 'Politics',
-    content: `World leaders convened today for the annual Global Climate Summit, facing mounting pressure to take decisive action against rising global temperatures. The summit's opening was marked by a stirring speech from the UN Secretary-General, who warned that humanity is at a "code red" and that the window for action is rapidly closing.
+    category: 'রাজনীতি',
+    content: `বিশ্ব নেতারা আজ বার্ষিক বিশ্ব জলবায়ু সম্মেলনের জন্য একত্রিত হয়েছেন, ক্রমবর্ধমান বৈশ্বিক তাপমাত্রা মোকাবেলায় সিদ্ধান্তমূলক পদক্ষেপ নেওয়ার জন্য ক্রমবর্ধমান চাপের সম্মুখীন হচ্ছেন। জাতিসংঘের মহাসচিবের একটি আলোড়ন সৃষ্টিকারী ভাষণের মাধ্যমে শীর্ষ সম্মেলনের উদ্বোধন হয়, যিনি সতর্ক করে দিয়েছিলেন যে মানবতা একটি "কোড রেড" এ রয়েছে এবং পদক্ষেপের সুযোগ দ্রুত বন্ধ হয়ে যাচ্ছে।
     
-Key agenda items include finalizing the rules for carbon markets, increasing financial aid to developing nations for climate adaptation, and securing more ambitious emissions reduction targets from major economies. Protests outside the venue highlighted the public's demand for more than just promises, with activists calling for immediate and binding commitments. The outcomes of this summit could shape global climate policy for the next decade.`,
+মুখ্য আলোচ্যসূচির মধ্যে রয়েছে কার্বন বাজারের নিয়ম চূড়ান্ত করা, জলবায়ু অভিযোজনের জন্য উন্নয়নশীল দেশগুলিতে আর্থিক সহায়তা বৃদ্ধি করা এবং প্রধান অর্থনীতিগুলি থেকে আরও উচ্চাভিলাষী নির্গমন হ্রাস লক্ষ্যমাত্রা সুরক্ষিত করা। ভেন্যুটির বাইরে বিক্ষোভগুলি কেবল প্রতিশ্রুতির চেয়ে আরও বেশি কিছুর জন্য জনগণের দাবিকে তুলে ধরেছে, কর্মীরা অবিলম্বে এবং বাধ্যতামূলক প্রতিশ্রুতির আহ্বান জানিয়েছে। এই শীর্ষ সম্মেলনের ফলাফল আগামী দশকের জন্য বিশ্বব্যাপী জলবায়ু নীতিকে রূপ দিতে পারে।`,
     ...getImage('politics-1')
   },
   {
     id: '2',
-    title: 'Quantum Computing Breakthrough Promises New Era of Technology',
+    title: 'কোয়ান্টাম কম্পিউটিংয়ে যুগান্তকারী সাফল্য প্রযুক্তির নতুন যুগের প্রতিশ্রুতি',
     publicationDate: '2024-07-20T14:30:00Z',
-    category: 'Technology',
-    content: `Researchers at a leading tech institute have announced a major breakthrough in quantum computing, achieving a stable 1,000-qubit processor. This development could accelerate advancements in fields from medicine to materials science, solving complex problems that are currently intractable for even the most powerful supercomputers.
+    category: 'প্রযুক্তি',
+    content: `একটি শীর্ষস্থানীয় প্রযুক্তি ইনস্টিটিউটের গবেষকরা কোয়ান্টাম কম্পিউটিংয়ে একটি বড় সাফল্য ঘোষণা করেছেন, একটি স্থিতিশীল ১,০০০-কিউবিট প্রসেসর অর্জন করেছেন। এই উন্নয়নটি চিকিৎসা থেকে শুরু করে পদার্থ বিজ্ঞান পর্যন্ত ক্ষেত্রগুলিতে অগ্রগতি ত্বরান্বিত করতে পারে, বর্তমানে সবচেয়ে শক্তিশালী সুপারকম্পিউটারগুলির জন্যও জটিল সমস্যাগুলি সমাধান করতে পারে।
     
-The new processor, named 'Sycamore X', is said to be exponentially more powerful than its predecessors. While commercial applications are still years away, this milestone is a significant step towards the quantum era. Experts believe it will revolutionize drug discovery, financial modeling, and artificial intelligence. However, it also raises new security concerns, as quantum computers could potentially break current encryption standards.`,
+নতুন প্রসেসর, 'সিকামোর এক্স' নামে পরিচিত, তার পূর্বসূরীদের চেয়ে বহুগুণ বেশি শক্তিশালী বলে বলা হয়। যদিও বাণিজ্যিক অ্যাপ্লিকেশন এখনও কয়েক বছর দূরে, এই মাইলফলকটি কোয়ান্টাম যুগের দিকে একটি গুরুত্বপূর্ণ পদক্ষেপ। বিশেষজ্ঞরা বিশ্বাস করেন যে এটি ওষুধ আবিষ্কার, আর্থিক মডেলিং এবং কৃত্রিম বুদ্ধিমত্তায় বিপ্লব ঘটাবে। যাইহোক, এটি নতুন নিরাপত্তা উদ্বেগও তৈরি করে, কারণ কোয়ান্টাম কম্পিউটারগুলি সম্ভাব্যভাবে বর্তমান এনক্রিপশন মানগুলি ভেঙে ফেলতে পারে।`,
     ...getImage('tech-1')
   },
   {
     id: '3',
-    title: 'New Humanitarian Corridors Opened in Conflict Zone',
+    title: 'সংঘাতপূর্ণ অঞ্চলে নতুন মানবিক করিডোর খোলা হয়েছে',
     publicationDate: '2024-07-22T08:00:00Z',
-    category: 'World',
-    content: `A fragile truce has allowed for the opening of new humanitarian corridors, providing much-needed aid to civilians trapped in the war-torn region of Aethel. Convoys carrying food, water, and medical supplies have begun to reach besieged cities for the first time in months.
+    category: 'বিশ্ব',
+    content: `একটি ভঙ্গুর যুদ্ধবিরতি নতুন মানবিক করিডোর খোলার অনুমতি দিয়েছে, যা এথেলের যুদ্ধ-বিধ্বস্ত অঞ্চলে আটকে পড়া বেসামরিক নাগরিকদের জন্য অত্যন্ত প্রয়োজনীয় সহায়তা প্রদান করছে। খাদ্য, জল এবং চিকিৎসা সামগ্রী বহনকারী কনভয়গুলি কয়েক মাসের মধ্যে প্রথমবারের মতো অবরুদ্ধ শহরগুলিতে পৌঁছাতে শুরু করেছে।
     
-International aid organizations have welcomed the development but remain cautious, citing the volatility of the situation. The corridors are a lifeline for hundreds of thousands of people facing starvation and disease. Diplomats are working to extend the ceasefire and translate this temporary relief into a more permanent peace agreement.`,
+আন্তর্জাতিক সাহায্য সংস্থাগুলি এই উন্নয়নকে স্বাগত জানিয়েছে কিন্তু পরিস্থিতির অস্থিরতা উল্লেখ করে সতর্ক রয়েছে। এই করিডোরগুলি অনাহার এবং রোগের সম্মুখীন শত শত হাজার মানুষের জন্য একটি জীবনরেখা। কূটনীতিকরা যুদ্ধবিরতি বাড়ানোর জন্য এবং এই অস্থায়ী ত্রাণকে আরও স্থায়ী শান্তি চুক্তিতে রূপান্তরিত করার জন্য কাজ করছেন।`,
     ...getImage('world-1')
   },
   {
     id: '4',
-    title: 'Underdogs Clinch Championship in Stunning Upset',
+    title: 'শ্বাসরুদ্ধকর বিজয়ে চ্যাম্পিয়নশিপ জিতল আন্ডারডগরা',
     publicationDate: '2024-07-21T21:00:00Z',
-    category: 'Sports',
-    content: `In a finale for the ages, the Northwood Foxes defeated the reigning champions, the Downtown Dynamos, in a stunning 3-2 victory. The match, which went into extra time, was decided by a last-minute goal from rookie striker Amelia Chen.
+    category: 'খেলা',
+    content: `যুগের সেরা এক ফাইনালে, নর্থউড ফক্সেস বর্তমান চ্যাম্পিয়ন, ডাউনটাউন ডায়নামোসকে ৩-২ গোলের শ্বাসরুদ্ধকর ব্যবধানে পরাজিত করেছে। অতিরিক্ত সময়ে গড়ানো ম্যাচটির ভাগ্য নির্ধারণ হয় রুকি স্ট্রাইকার অ্যামেলিয়া চেনের শেষ মুহূর্তের গোলে।
     
-The Foxes, who were considered long shots at the beginning of the season, completed a fairytale run to the championship. The victory marks their first title in the club's 50-year history and has sparked jubilant celebrations across their home city. The coach praised the team's "unbreakable spirit and relentless hard work."`,
+মৌসুমের শুরুতে যাদেরকে দুর্বল মনে করা হচ্ছিল, সেই ফক্সেস চ্যাম্পিয়নশিপে রূপকথার মতো এক যাত্রা সম্পন্ন করেছে। এই বিজয় ক্লাবের ৫০ বছরের ইতিহাসে তাদের প্রথম শিরোপা এবং তাদের নিজ শহরে উল্লাসের বন্যা বইয়ে দিয়েছে। কোচ দলের "অদম্য চেতনা এবং অক্লান্ত পরিশ্রমের" প্রশংসা করেছেন।`,
     ...getImage('sports-1')
   },
   {
     id: '5',
-    title: 'Central Bank Hikes Interest Rates to Combat Inflation',
+    title: 'মুদ্রাস্ফীতি মোকাবেলায় কেন্দ্রীয় ব্যাংক সুদের হার বাড়িয়েছে',
     publicationDate: '2024-07-22T11:00:00Z',
-    category: 'Business',
-    content: `The National Central Bank announced a 50-basis-point interest rate hike today, its third this year, as it intensifies its fight against persistent inflation. The move, which was widely anticipated by economists, aims to cool down an overheating economy and stabilize prices.
+    category: 'ব্যবসা',
+    content: `জাতীয় কেন্দ্রীয় ব্যাংক আজ ৫০-বেসিস-পয়েন্ট সুদের হার বৃদ্ধির ঘোষণা দিয়েছে, যা এই বছর তৃতীয়বারের মতো, কারণ এটি ক্রমাগত মুদ্রাস্ফীতির বিরুদ্ধে তার লড়াইকে তীব্রতর করছে। অর্থনীতিবিদদের দ্বারা ব্যাপকভাবে প্রত্যাশিত এই পদক্ষেপের লক্ষ্য একটি অতি উত্তপ্ত অর্থনীতিকে শীতল করা এবং দাম স্থিতিশীল করা।
     
-Markets reacted with mixed results, with the stock market dipping slightly while the national currency strengthened. The bank's governor stated that they are committed to bringing inflation back to the 2% target, even if it means a period of slower economic growth. Consumers are likely to see higher costs for mortgages and loans as a result of the decision.`,
+বাজারগুলি মিশ্র প্রতিক্রিয়া দেখিয়েছে, স্টক মার্কেট কিছুটা হ্রাস পেয়েছে এবং জাতীয় মুদ্রা শক্তিশালী হয়েছে। ব্যাংকের গভর্নর বলেছেন যে তারা মুদ্রাস্ফীতিকে ২% লক্ষ্যে ফিরিয়ে আনতে প্রতিশ্রুতিবদ্ধ, এমনকি যদি এর অর্থ ধীর অর্থনৈতিক প্রবৃদ্ধির একটি সময় হয়। এই সিদ্ধান্তের ফলে ভোক্তারা সম্ভবত বন্ধকী এবং ঋণের জন্য উচ্চতর খরচ দেখতে পাবে।`,
     ...getImage('business-1')
   },
   {
     id: '6',
-    title: 'AI Ethics Board Established to Guide Development',
+    title: 'উন্নয়ন নির্দেশনার জন্য এআই এথিক্স বোর্ড প্রতিষ্ঠিত',
     publicationDate: '2024-07-19T16:00:00Z',
-    category: 'Technology',
-    content: `A consortium of leading technology companies and academic institutions has announced the formation of an independent AI Ethics and Safety Board. The board's mission is to create and promote best practices for the responsible development and deployment of artificial intelligence.
+    category: 'প্রযুক্তি',
+    content: `শীর্ষস্থানীয় প্রযুক্তি কোম্পানি এবং একাডেমিক প্রতিষ্ঠানগুলির একটি কনসোর্টিয়াম একটি স্বাধীন এআই এথিক্স এবং সেফটি বোর্ড গঠনের ঘোষণা দিয়েছে। বোর্ডের লক্ষ্য হল কৃত্রিম বুদ্ধিমত্তার দায়িত্বশীল উন্নয়ন এবং স্থাপনার জন্য সর্বোত্তম অনুশীলন তৈরি করা এবং প্রচার করা।
     
-This initiative comes amid growing public and governmental concern over the potential misuse of AI, including issues of bias, privacy, and autonomous decision-making. The board will publish research, provide policy recommendations, and offer a framework for auditing AI systems. Critics argue that for the board to be effective, its recommendations must be enforceable rather than merely advisory.`,
+এই উদ্যোগটি পক্ষপাত, গোপনীয়তা এবং স্বায়ত্তশাসিত সিদ্ধান্ত গ্রহণ সহ এআই-এর সম্ভাব্য অপব্যবহার নিয়ে ক্রমবর্ধমান জন এবং সরকারী উদ্বেগের মধ্যে এসেছে। বোর্ড গবেষণা প্রকাশ করবে, নীতির সুপারিশ প্রদান করবে এবং এআই সিস্টেম নিরীক্ষার জন্য একটি কাঠামো সরবরাহ করবে। সমালোচকরা যুক্তি দেখান যে বোর্ডকে কার্যকর হতে হলে, তার সুপারিশগুলি কেবল উপদেষ্টার পরিবর্তে প্রয়োগযোগ্য হতে হবে।`,
     ...getImage('tech-2')
   }
 ];
