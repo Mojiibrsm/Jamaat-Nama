@@ -13,6 +13,7 @@ import { deleteDoc, doc } from "firebase/firestore";
 import { useFirestore } from "@/firebase/provider";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { slugify } from "@/lib/utils";
 
 export default function AdminArticlesPage() {
   const { articles, loading, error } = useArticles();
@@ -136,7 +137,7 @@ export default function AdminArticlesPage() {
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuItem asChild>
-                          <Link href={`/article/${article.id}`} target="_blank">দেখুন</Link>
+                          <Link href={`/${slugify(article.category)}/${article.slug}`} target="_blank">দেখুন</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleEdit(article.id)}>সম্পাদনা করুন</DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleDelete(article.id)}>মুছে ফেলুন</DropdownMenuItem>

@@ -23,7 +23,7 @@ import { Article } from "@/lib/data";
 import { useEffect, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { cn } from "@/lib/utils";
+import { cn, slugify } from "@/lib/utils";
 import { CalendarIcon, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "../ui/calendar";
@@ -104,15 +104,23 @@ export function ArticleForm({ initialData }: ArticleFormProps) {
     if (!firestore) return;
     setIsSubmitting(true);
     
-    const finalData = { ...data };
+    const finalData: Partial<Article> = { ...data };
     if (data.offender === 'অন্যান্য') {
         finalData.offender = data.offender_other || 'অন্যান্য';
     }
     delete (finalData as any).offender_other;
 
+    finalData.slug = slugify(data.title);
+
     try {
       const docRef = initialData?.id ? doc(firestore, 'articles', initialData.id) : doc(collection(firestore, "articles"));
-      await setDoc(docRef, { ...finalData, id: docRef.id }, { merge: true });
+      
+      const dataToSave = {
+        ...finalData,
+        id: docRef.id,
+      };
+
+      await setDoc(docRef, dataToSave, { merge: true });
 
       toast({
         title: "সাফল্য!",

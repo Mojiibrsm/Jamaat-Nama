@@ -8,6 +8,7 @@ import type { Article } from '@/lib/data';
 import { format } from 'date-fns';
 import { CalendarDays } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { slugify } from '@/lib/utils';
 
 export function ArticleCard({ article }: { article: Article }) {
   const [formattedDate, setFormattedDate] = useState('');
@@ -18,12 +19,14 @@ export function ArticleCard({ article }: { article: Article }) {
     }
   }, [article.publicationDate]);
 
+  const articleUrl = `/${slugify(article.category)}/${article.slug}`;
+
   return (
-    <Link href={`/article/${article.id}`} className="group">
+    <Link href={articleUrl} className="group">
       <Card className="h-full overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-2 transform motion-safe:group-hover:scale-105">
         <div className="relative h-48 w-full">
           <Image
-            src={article.imageUrl}
+            src={article.imageUrl || '/placeholder.png'}
             alt={article.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

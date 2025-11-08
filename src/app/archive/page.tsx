@@ -6,6 +6,7 @@ import { Article } from '@/lib/data';
 import Link from 'next/link';
 import { useArticles } from '@/hooks/use-articles';
 import { Skeleton } from '@/components/ui/skeleton';
+import { slugify } from '@/lib/utils';
 
 export default function ArchivePage() {
   const { articles, loading, error } = useArticles();
@@ -54,7 +55,7 @@ export default function ArchivePage() {
                     <h2 className="text-2xl font-bold mb-4 text-primary/80">{year}</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                       {articlesByYear[year]?.map(article => (
-                        <Link key={article.id} href={`/article/${article.id}`} className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                        <Link key={article.id} href={`/${slugify(article.category)}/${article.slug}`} className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
                           <h3 className="font-semibold text-foreground/90">{article.title}</h3>
                           {article.publicationDate && (
                             <p className="text-sm text-muted-foreground mt-1">{new Date(article.publicationDate).toLocaleDateString('bn-BD', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
