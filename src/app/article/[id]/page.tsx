@@ -1,3 +1,5 @@
+
+'use client';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { articles, Article } from '@/lib/data';
@@ -7,28 +9,56 @@ import { CalendarDays } from 'lucide-react';
 import { format } from 'date-fns';
 import { ArticleSummary } from '@/components/article-summary';
 import { Separator } from '@/components/ui/separator';
+import { useEffect, useState } from 'react';
 
 async function getArticle(id: string): Promise<Article | undefined> {
   return articles.find(article => article.id === id);
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-    const article = await getArticle(params.id);
-    if (!article) {
-        return {
-            title: 'Article Not Found'
-        }
-    }
-    return {
-        title: `${article.title} | Jamaat Nama`,
-        description: article.content.substring(0, 150)
-    }
-}
+export default function ArticlePage({ params }: { params: { id: string } }) {
+  const [article, setArticle] = useState<Article | null | undefined>(undefined);
+  const [formattedDate, setFormattedDate] = useState('');
 
-export default async function ArticlePage({ params }: { params: { id: string } }) {
-  const article = await getArticle(params.id);
+  useEffect(() => {
+    getArticle(params.id).then(fetchedArticle => {
+      setArticle(fetchedArticle);
+      if (fetchedArticle) {
+        setFormattedDate(format(new Date(fetchedArticle.publicationDate), 'MMMM d, yyyy'));
+      }
+    });
+  }, [params.id]);
 
-  if (!article) {
+  if (article === undefined) {
+    // Loading state
+    return (
+        <div className="flex min-h-screen w-full flex-col">
+            <Header />
+            <main className="flex-1 py-8">
+                <article className="container mx-auto px-4 md:px-6 max-w-4xl">
+                    <div className="mb-6 space-y-4">
+                        <div className="h-6 w-24 bg-muted rounded animate-pulse"></div>
+                        <div className="h-12 md:h-14 bg-muted rounded animate-pulse w-full"></div>
+                        <div className="flex items-center text-sm text-muted-foreground">
+                            <CalendarDays className="mr-2 h-4 w-4" />
+                            <div className="h-4 w-32 bg-muted rounded animate-pulse"></div>
+                        </div>
+                    </div>
+                    <div className="relative h-64 md:h-96 w-full mb-8 rounded-lg overflow-hidden shadow-lg bg-muted animate-pulse"></div>
+                    <div className="h-10 w-48 bg-muted rounded animate-pulse mb-8"></div>
+                    <Separator className="my-8" />
+                    <div className="space-y-6">
+                        <div className="h-4 bg-muted rounded-full w-full animate-pulse"></div>
+                        <div className="h-4 bg-muted rounded-full w-5/6 animate-pulse"></div>
+                        <div className="h-4 bg-muted rounded-full w-full animate-pulse"></div>
+                        <div className="h-4 bg-muted rounded-full w-3/4 animate-pulse"></div>
+                    </div>
+                </article>
+            </main>
+        </div>
+    )
+  }
+
+  if (article === null) {
     notFound();
   }
 
@@ -44,8 +74,9 @@ export default async function ArticlePage({ params }: { params: { id: string } }
             </h1>
             <div className="flex items-center text-sm text-muted-foreground">
               <CalendarDays className="mr-2 h-4 w-4" />
-              <span>{format(new Date(article.publicationDate), 'MMMM d, yyyy')}</span>
+              <span>{formattedDate}</span>
             </div>
+
           </div>
           
           <div className="relative h-64 md:h-96 w-full mb-8 rounded-lg overflow-hidden shadow-lg">
@@ -74,8 +105,26 @@ export default async function ArticlePage({ params }: { params: { id: string } }
   );
 }
 
+// Keeping generateStaticParams, but metadata generation needs to be handled differently
+// for a fully client-rendered approach. For now, we will make it a dynamic page.
+// We can re-add static rendering if needed.
+/*
 export async function generateStaticParams() {
     return articles.map((article) => ({
       id: article.id,
     }));
 }
+
+export async function generateMetadata({ params }: { params: { id: string } }) {
+    const article = await getArticle(params.id);
+    if (!article) {
+        return {
+            title: 'Article Not Found'
+        }
+    }
+    return {
+        title: `${article.title} | Jamaat Nama`,
+        description: article.content.substring(0, 150)
+    }
+}
+*/

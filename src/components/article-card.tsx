@@ -1,3 +1,5 @@
+
+'use client';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -5,8 +7,15 @@ import { Badge } from '@/components/ui/badge';
 import type { Article } from '@/lib/data';
 import { format } from 'date-fns';
 import { CalendarDays } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export function ArticleCard({ article }: { article: Article }) {
+  const [formattedDate, setFormattedDate] = useState('');
+
+  useEffect(() => {
+    setFormattedDate(format(new Date(article.publicationDate), 'MMMM d, yyyy'));
+  }, [article.publicationDate]);
+
   return (
     <Link href={`/article/${article.id}`} className="group">
       <Card className="h-full overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-2 transform motion-safe:group-hover:scale-105">
@@ -32,7 +41,7 @@ export function ArticleCard({ article }: { article: Article }) {
           </p>
           <div className="flex items-center text-xs text-muted-foreground mt-4">
             <CalendarDays className="mr-2 h-4 w-4" />
-            <span>{format(new Date(article.publicationDate), 'MMMM d, yyyy')}</span>
+            {formattedDate ? <span>{formattedDate}</span> : <div className="h-4 w-24 bg-muted rounded animate-pulse" />}
           </div>
         </CardContent>
       </Card>
