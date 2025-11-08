@@ -4,6 +4,8 @@ import { Menu } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 
 const navLinks = [
+    { href: '/', label: 'সব খবর' },
+    { href: '/archive', label: 'আর্কাইভ' },
     { href: '/about-us', label: 'আমাদের সম্পর্কে' },
     { href: '/news-patan', label: 'খবর পাঠান' },
     { href: '/privacy-policy', label: 'গোপনীয়তা নীতি' },
