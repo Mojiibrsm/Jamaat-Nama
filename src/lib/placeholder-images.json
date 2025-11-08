@@ -1,3 +1,40 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "politics-1",
+      "description": "A grand government building with columns.",
+      "imageUrl": "https://images.unsplash.com/photo-1625516581237-3d9d0a31538c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxnb3Zlcm5tZW50JTIwYnVpbGRpbmd8ZW58MHx8fHwxNzYyNTUwMzg4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "government building"
+    },
+    {
+      "id": "tech-1",
+      "description": "A futuristic computer circuit board.",
+      "imageUrl": "https://images.unsplash.com/photo-1651340550839-3b295d930048?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjaXJjdWl0JTIwYm9hcmR8ZW58MHx8fHwxNzYyNTA5MjgxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "circuit board"
+    },
+    {
+      "id": "world-1",
+      "description": "A satellite image of Earth from space.",
+      "imageUrl": "https://images.unsplash.com/photo-1661705969607-cde73828023d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxlYXJ0aCUyMHNwYWNlfGVufDB8fHx8MTc2MjU4NjQ5OHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "earth space"
+    },
+    {
+      "id": "sports-1",
+      "description": "A packed sports stadium under bright lights.",
+      "imageUrl": "https://images.unsplash.com/photo-1534375754046-291eefbbeff7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxzcG9ydHMlMjBzdGFkaXVtfGVufDB8fHx8MTc2MjU4NDU1Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "sports stadium"
+    },
+    {
+      "id": "business-1",
+      "description": "A modern city skyline with skyscrapers.",
+      "imageUrl": "https://images.unsplash.com/photo-1544214036-5aaeb9e32d11?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxjaXR5JTIwc2t5bGluZXxlbnwwfHx8fDE3NjI1NDY0Njd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "city skyline"
+    },
+    {
+      "id": "tech-2",
+      "description": "A person interacting with a holographic interface.",
+      "imageUrl": "https://images.unsplash.com/photo-1635324944940-0c0a9c8f9bf1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8aG9sb2dyYXBoaWMlMjBpbnRlcmZhY2V8ZW58MHx8fHwxNzYyNTE1MjY3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "holographic interface"
+    }
+  ]
 }
