@@ -19,6 +19,10 @@ export default function SettingsPage() {
                 <Label htmlFor="site-name">সাইটের নাম</Label>
                 <Input id="site-name" defaultValue="Jamaat Nama" />
             </div>
+            <div className="space-y-2">
+                <Label htmlFor="site-url">সাইট URL</Label>
+                <Input id="site-url" type="url" placeholder="https://example.com" />
+            </div>
              <div className="space-y-2">
                 <Label htmlFor="admin-email">অ্যাডমিন ইমেইল</Label>
                 <Input id="admin-email" type="email" defaultValue="admin@example.com" />
