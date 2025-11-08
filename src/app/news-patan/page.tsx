@@ -6,47 +6,56 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Info } from 'lucide-react';
+import { Info, Loader2 } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useFirestore } from '@/firebase/provider';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { districts } from '@/lib/districts';
+import ReCAPTCHA from "react-google-recaptcha";
+import { submitNews } from '@/ai/flows/submit-news-flow';
 
 export default function NewsPatanPage() {
   const { toast } = useToast();
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
   const [selectedOffender, setSelectedOffender] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   const categories = ['খুন', 'ধর্ষণ', 'চাঁদাবাজি', 'হামলা / সংঘর্ষ', 'লুটপাট', 'দখল', 'ইসলামবিদ্বেষ', 'মাদক', 'সন্ত্রাস', 'দুর্নীতি', 'সাইবার অপরাধ', 'নারী নির্যাতন', 'অন্যান্য'];
   const offenders = ['জামায়াত', 'শিবির', 'অন্যান্য'];
-  const firestore = useFirestore();
-
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!firestore) return;
+    setIsSubmitting(true);
+
+    const recaptchaToken = await recaptchaRef.current?.executeAsync();
+    recaptchaRef.current?.reset();
+
+    if (!recaptchaToken) {
+      toast({
+        variant: 'destructive',
+        title: "reCAPTCHA যাচাইকরণ ব্যর্থ হয়েছে",
+        description: "অনুগ্রহ করে আবার চেষ্টা করুন।",
+      });
+      setIsSubmitting(false);
+      return;
+    }
 
     const formData = new FormData(e.target as HTMLFormElement);
-    const submissionData: {[key: string]: any} = {
-        title: formData.get('title'),
-        newsLink: formData.get('newsLink'),
-        details: formData.get('details'),
-        name: formData.get('name') || 'নাম প্রকাশে অনিচ্ছুক',
-        email: formData.get('email'),
-        category: selectedCategory === 'অন্যান্য' ? formData.get('new-category') : selectedCategory,
+    const submissionData = {
+        title: formData.get('title') as string,
+        newsLink: formData.get('newsLink') as string,
+        details: formData.get('details') as string,
+        name: (formData.get('name') as string) || 'নাম প্রকাশে অনিচ্ছুক',
+        email: formData.get('email') as string,
+        category: selectedCategory === 'অন্যান্য' ? formData.get('new-category') as string : selectedCategory,
         location: selectedLocation,
-        offender: selectedOffender === 'অন্যান্য' ? formData.get('new-offender') : selectedOffender,
-        status: 'Pending',
-        submittedAt: serverTimestamp()
+        offender: selectedOffender === 'অন্যান্য' ? formData.get('new-offender') as string : selectedOffender,
     };
-    
-    // We are not handling file uploads yet.
-    // const evidenceFile = formData.get('evidence');
 
     try {
-        await addDoc(collection(firestore, 'submissions'), submissionData);
+        await submitNews({ ...submissionData, recaptchaToken });
         toast({
           title: "আপনার তথ্য গৃহীত হয়েছে",
           description: "আপনার পাঠানো তথ্য যাচাই করে প্রকাশ করা হবে। ধন্যবাদ।",
@@ -60,8 +69,10 @@ export default function NewsPatanPage() {
         toast({
             variant: 'destructive',
             title: "একটি ত্রুটি ঘটেছে",
-            description: "আপনার তথ্য জমা দেওয়ার সময় একটি সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
+            description: error instanceof Error ? error.message : "আপনার তথ্য জমা দেওয়ার সময় একটি সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
         });
+    } finally {
+        setIsSubmitting(false);
     }
   };
 
@@ -89,6 +100,11 @@ export default function NewsPatanPage() {
               </Alert>
 
               <form onSubmit={handleSubmit} className="space-y-4">
+                 <ReCAPTCHA
+                    ref={recaptchaRef}
+                    size="invisible"
+                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+                  />
                 <div className="space-y-2">
                   <Label htmlFor="title">শিরোনাম</Label>
                   <Input name="title" id="title" placeholder="আপনার খবরের শিরোনাম লিখুন" required />
@@ -152,8 +168,8 @@ export default function NewsPatanPage() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="evidence">প্রমাণ (ছবি/ডকুমেন্ট) (ঐচ্ছিক)</Label>
-                  <Input name="evidence" id="evidence" type="file" />
-                  <p className="text-sm text-muted-foreground">আপনি ছবি, ভিডিও অথবা পিডিএফ ফাইল আপলোড করতে পারেন।</p>
+                  <Input name="evidence" id="evidence" type="file" disabled />
+                  <p className="text-sm text-muted-foreground">এই ফিচারটি শীঘ্রই আসছে।</p>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="name">আপনার নাম (ঐচ্ছিক)</Label>
@@ -163,7 +179,22 @@ export default function NewsPatanPage() {
                   <Label htmlFor="email">আপনার ইমেইল (ঐচ্ছিক)</Label>
                   <Input name="email" id="email" type="email" placeholder="আপনার ইমেইল" />
                 </div>
-                <Button type="submit" size="lg">জমা দিন</Button>
+                
+                 <div className="my-4">
+                    <ReCAPTCHA
+                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+                        onChange={(token) => {
+                            if (recaptchaRef.current) {
+                                // We are using invisible recaptcha, so onChange is not the primary way to get the token.
+                                // But if it changes, we can update the ref.
+                            }
+                        }}
+                    />
+                </div>
+
+                <Button type="submit" size="lg" disabled={isSubmitting}>
+                   {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'জমা দিন'}
+                </Button>
               </form>
             </CardContent>
           </Card>
