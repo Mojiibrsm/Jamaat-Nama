@@ -3,6 +3,17 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search } from 'lucide-react';
 
+const categories = [
+  { value: 'khun', label: 'খুন' },
+  { value: 'dhorshon', label: 'ধর্ষণ' },
+  { value: 'chadabaji', label: 'চাঁদাবাজি' },
+  { value: 'hamla', label: 'হামলা / সংঘর্ষ' },
+  { value: 'lutpat', label: 'লুটপাট' },
+  { value: 'dokhol', label: 'দখল' },
+  { value: 'islambiddesh', label: 'ইসলামবিদ্বেষ' },
+  { value: 'madok', label: 'মাদক' },
+];
+
 export function Hero() {
   return (
     <section className="relative flex flex-col items-center justify-center text-center text-white">
@@ -29,11 +40,9 @@ export function Hero() {
                   <SelectValue placeholder="অপরাধ ক্যাটাগরি" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="politics">রাজনীতি</SelectItem>
-                  <SelectItem value="technology">প্রযুক্তি</SelectItem>
-                  <SelectItem value="world">বিশ্ব</SelectItem>
-                  <SelectItem value="sports">খেলা</SelectItem>
-                  <SelectItem value="business">ব্যবসা</SelectItem>
+                  {categories.map((category) => (
+                    <SelectItem key={category.value} value={category.value}>{category.label}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               <Button size="lg" className="h-12 text-base">

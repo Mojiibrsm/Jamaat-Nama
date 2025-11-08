@@ -6,19 +6,37 @@ import { ArticleCard } from '@/components/article-card';
 import type { Article } from '@/lib/data';
 import { Search } from 'lucide-react';
 
-const categories = ['সব', 'রাজনীতি', 'প্রযুক্তি', 'বিশ্ব', 'খেলা', 'ব্যবসা'];
+const categories = ['সব', 'খুন', 'ধর্ষণ', 'চাঁদাবাজি', 'হামলা', 'লুটপাট', 'দখল', 'ইসলামবিদ্বেষ', 'মাদক'];
 
 export function NewsFeed({ articles }: { articles: Article[] }) {
   const [selectedCategory, setSelectedCategory] = useState('সব');
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredArticles = useMemo(() => {
+    // A temp solution to map categories for filtering
+    const tempCategoryMap: { [key: string]: string } = {
+      'হামলা': 'হামলা / সংঘর্ষ',
+    };
+    
     return articles.filter(article => {
-      const matchesCategory = selectedCategory === 'সব' || article.category === selectedCategory;
+      const articleCategory = article.category;
+      const selected = tempCategoryMap[selectedCategory] || selectedCategory;
+
+      const matchesCategory = selected === 'সব' || articleCategory === selected;
       const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) || article.content.toLowerCase().includes(searchTerm.toLowerCase());
       return matchesCategory && matchesSearch;
     });
   }, [articles, selectedCategory, searchTerm]);
+
+  // A temp solution to map categories for display
+  const displayCategories = useMemo(() => {
+    const allCategories = ['সব', ...new Set(articles.map(a => a.category))];
+     const categoryDisplayMap: { [key: string]: string } = {
+      'হামলা / সংঘর্ষ': 'হামলা',
+    };
+    return allCategories.map(c => categoryDisplayMap[c] || c);
+  }, [articles]);
+
 
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 animate-fade-in-up">
@@ -35,7 +53,7 @@ export function NewsFeed({ articles }: { articles: Article[] }) {
         </div>
         <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="w-full md:w-auto overflow-x-auto">
           <TabsList>
-            {categories.map(category => (
+            {displayCategories.map(category => (
               <TabsTrigger key={category} value={category}>
                 {category}
               </TabsTrigger>

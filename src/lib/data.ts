@@ -4,7 +4,7 @@ export type Article = {
   id: string;
   title: string;
   publicationDate: string;
-  category: 'রাজনীতি' | 'প্রযুক্তি' | 'বিশ্ব' | 'খেলা' | 'ব্যবসা';
+  category: 'খুন' | 'ধর্ষণ' | 'চাঁদাবাজি' | 'হামলা / সংঘর্ষ' | 'লুটপাট' | 'দখল' | 'ইসলামবিদ্বেষ' | 'মাদক' | 'রাজনীতি' | 'প্রযুক্তি' | 'বিশ্ব' | 'খেলা' | 'ব্যবসা';
   content: string;
   imageUrl: string;
   imageHint: string;
