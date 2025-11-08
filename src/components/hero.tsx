@@ -13,7 +13,7 @@ export function Hero() {
             অপরাধের তথ্যভান্ডার : সত্যের মুখোমুখি বাংলাদেশ
           </h1>
           <p className="max-w-3xl text-lg md:text-xl text-white/90 drop-shadow-md animate-fade-in-up animation-delay-500">
-            বিএনপি ও এর অঙ্গসংগঠনের অপরাধমূলক কর্মকাণ্ডের প্রমাণভিত্তিক আর্কাইভ
+            জামায়াত, শিবির এবং তাদের সকল অঙ্গসংগঠনের অপরাধমূলক কর্মকাণ্ডের প্রমাণভিত্তিক আর্কাইভ
           </p>
           <div className="mt-4 w-full max-w-2xl animate-fade-in-up animation-delay-700">
             <div className="flex flex-col sm:flex-row gap-2 p-2 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
