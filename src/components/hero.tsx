@@ -17,7 +17,7 @@ const categories = [
 export function Hero() {
   return (
     <section className="relative flex flex-col items-center justify-center text-center text-white">
-      <div className="relative w-full h-[60vh] min-h-[450px] flex items-center justify-center bg-cover bg-center" style={{backgroundImage: "url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')"}}>
+      <div className="relative w-full h-[60vh] min-h-[450px] flex items-center justify-center bg-cover bg-center" style={{backgroundImage: "url('https://storage.googleapis.com/stabl-agent-testing/jamaat-e-islami-600w.png')"}}>
         <div className="absolute inset-0 bg-black/60" />
         <div className="relative z-10 container mx-auto px-4 md:px-6 flex flex-col items-center gap-6 animate-fade-in">
           <h1 className="text-4xl md:text-6xl font-headline font-bold text-white drop-shadow-lg animate-fade-in-up animation-delay-300">
