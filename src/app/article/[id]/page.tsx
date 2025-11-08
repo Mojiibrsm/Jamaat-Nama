@@ -15,6 +15,8 @@ import { doc, getDoc } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+
 
 async function getArticle(firestore: any, id: string): Promise<Article | null> {
   const docRef = doc(firestore, 'articles', id);
@@ -170,29 +172,56 @@ export default function ArticlePage({ params }: { params: { id:string } }) {
             ))}
           </div>
 
-           <div className="my-8 flex flex-wrap justify-center gap-4">
+           <div className="my-8 space-y-6">
               {article.newsLink && (
-                  <Button asChild size="lg">
-                      <a href={article.newsLink} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="mr-2 h-5 w-5" />
-                          মূল সূত্র দেখুন
-                      </a>
-                  </Button>
+                  <div className="text-center">
+                      <Button asChild size="lg">
+                          <a href={article.newsLink} target="_blank" rel="noopener noreferrer">
+                              <ExternalLink className="mr-2 h-5 w-5" />
+                              মূল সূত্র দেখুন
+                          </a>
+                      </Button>
+                  </div>
               )}
-               {isShareSupported && (
-                  <Button onClick={handleShare} variant="outline" size="lg">
-                      <Share2 className="mr-2 h-5 w-5" />
-                      শেয়ার করুন
-                  </Button>
-              )}
-              <Button onClick={handleCopyLink} variant="outline" size="lg">
-                  <Copy className="mr-2 h-5 w-5" />
-                  লিংক কপি করুন
-              </Button>
-               <Button onClick={handlePrint} variant="outline" size="lg">
-                  <Printer className="mr-2 h-5 w-5" />
-                  প্রিন্ট করুন
-              </Button>
+              <div className="flex flex-wrap justify-center gap-4">
+                  <TooltipProvider>
+                      {isShareSupported && (
+                          <Tooltip>
+                              <TooltipTrigger asChild>
+                                  <Button onClick={handleShare} variant="outline" size="icon">
+                                      <Share2 className="h-5 w-5" />
+                                      <span className="sr-only">শেয়ার করুন</span>
+                                  </Button>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                  <p>শেয়ার করুন</p>
+                              </TooltipContent>
+                          </Tooltip>
+                      )}
+                      <Tooltip>
+                          <TooltipTrigger asChild>
+                              <Button onClick={handleCopyLink} variant="outline" size="icon">
+                                  <Copy className="h-5 w-5" />
+                                  <span className="sr-only">লিংক কপি করুন</span>
+                              </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                              <p>লিংক কপি করুন</p>
+                          </TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                          <TooltipTrigger asChild>
+                              <Button onClick={handlePrint} variant="outline" size="icon">
+                                  <Printer className="h-5 w-5" />
+                                  <span className="sr-only">প্রিন্ট করুন</span>
+                              </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                              <p>প্রিন্ট করুন</p>
+                          </TooltipContent>
+                      </Tooltip>
+                  </TooltipProvider>
+              </div>
             </div>
         </article>
       </main>
