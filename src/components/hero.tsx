@@ -10,10 +10,10 @@ export function Hero() {
         <div className="absolute inset-0 bg-black/60" />
         <div className="relative z-10 container mx-auto px-4 md:px-6 flex flex-col items-center gap-6 animate-fade-in">
           <h1 className="text-4xl md:text-6xl font-headline font-bold text-white drop-shadow-lg animate-fade-in-up animation-delay-300">
-            অপরাধের তথ্যভান্ডার : সত্যের মুখোমুখি বাংলাদেশ
+            সত্যের সন্ধানে: জামায়াত-শিবিরের অপরাধনামা
           </h1>
           <p className="max-w-3xl text-lg md:text-xl text-white/90 drop-shadow-md animate-fade-in-up animation-delay-500">
-            জামায়াত, শিবির এবং তাদের সকল অঙ্গসংগঠনের অপরাধমূলক কর্মকাণ্ডের প্রমাণভিত্তিক আর্কাইভ
+            ঐতিহাসিক তথ্যের ভিত্তিতে জামায়াত, শিবির এবং তাদের সহযোগীদের সকল অপরাধমূলক কর্মকাণ্ডের একটি উন্মুক্ত আর্কাইভ।
           </p>
           <div className="mt-4 w-full max-w-2xl animate-fade-in-up animation-delay-700">
             <div className="flex flex-col sm:flex-row gap-2 p-2 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
