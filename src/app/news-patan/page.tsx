@@ -1,3 +1,4 @@
+
 'use client';
 import { Header } from '@/components/header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,9 +9,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Info } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useState } from 'react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function NewsPatanPage() {
   const { toast } = useToast();
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const categories = ['খুন', 'ধর্ষণ', 'চাঁদাবাজি', 'হামলা / সংঘর্ষ', 'লুটপাট', 'দখল', 'ইসলামবিদ্বেষ', 'মাদক', 'সন্ত্রাস', 'দুর্নীতি', 'সাইবার অপরাধ', 'নারী নির্যাতন', 'অন্যান্য'];
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,6 +24,7 @@ export default function NewsPatanPage() {
       description: "আপনার পাঠানো তথ্য যাচাই করে প্রকাশ করা হবে। ধন্যবাদ।",
     });
     (e.target as HTMLFormElement).reset();
+    setSelectedCategory('');
   };
 
   return (
@@ -49,9 +55,28 @@ export default function NewsPatanPage() {
                   <Label htmlFor="title">শিরোনাম</Label>
                   <Input id="title" placeholder="আপনার খবরের শিরোনাম লিখুন" required />
                 </div>
-                 <div className="space-y-2">
+                <div className="space-y-2">
                   <Label htmlFor="newsLink">মূল খবরের লিংক</Label>
                   <Input id="newsLink" type="url" placeholder="খবরের মূল লিংক দিন" required />
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="category">ক্যাটাগরি</Label>
+                    <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                      <SelectTrigger id="category">
+                        <SelectValue placeholder="ক্যাটাগরি নির্বাচন করুন" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {categories.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  {selectedCategory === 'অন্যান্য' && (
+                    <div className="space-y-2">
+                      <Label htmlFor="new-category">নতুন ক্যাটাগরি যোগ করুন</Label>
+                      <Input id="new-category" placeholder="নতুন ক্যাটাগরি লিখুন" />
+                    </div>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="details">বিস্তারিত (ঐচ্ছিক)</Label>
