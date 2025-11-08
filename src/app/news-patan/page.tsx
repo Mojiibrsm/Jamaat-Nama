@@ -1,4 +1,3 @@
-
 'use client';
 import { Header } from '@/components/header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -38,7 +37,7 @@ export default function NewsPatanPage() {
         email: formData.get('email'),
         category: selectedCategory === 'অন্যান্য' ? formData.get('new-category') : selectedCategory,
         location: selectedLocation,
-        offender: selectedOffender,
+        offender: selectedOffender === 'অন্যান্য' ? formData.get('new-offender') : selectedOffender,
         status: 'Pending',
         submittedAt: serverTimestamp()
     };
@@ -113,7 +112,7 @@ export default function NewsPatanPage() {
                   {selectedCategory === 'অন্যান্য' && (
                     <div className="space-y-2">
                       <Label htmlFor="new-category">নতুন ক্যাটাগরি যোগ করুন</Label>
-                      <Input name="new-category" id="new-category" placeholder="নতুন ক্যাটাগরি লিখুন" />
+                      <Input name="new-category" id="new-category" placeholder="নতুন ক্যাটাগরি লিখুন" required/>
                     </div>
                   )}
                 </div>
@@ -141,6 +140,12 @@ export default function NewsPatanPage() {
                       </Select>
                     </div>
                 </div>
+                 {selectedOffender === 'অন্যান্য' && (
+                    <div className="space-y-2">
+                        <Label htmlFor="new-offender">অন্যান্য অভিযুক্তের নাম</Label>
+                        <Input name="new-offender" id="new-offender" placeholder="অভিযুক্তের নাম লিখুন" required />
+                    </div>
+                )}
                 <div className="space-y-2">
                   <Label htmlFor="details">বিস্তারিত (ঐচ্ছিক)</Label>
                   <Textarea name="details" id="details" placeholder="আপনার খবরটি বিস্তারিত লিখুন" rows={6} />

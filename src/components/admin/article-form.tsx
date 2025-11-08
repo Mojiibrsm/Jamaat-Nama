@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -36,10 +36,19 @@ const formSchema = z.object({
   publicationDate: z.string().optional(),
   location: z.string().min(1, { message: "স্থান উল্লেখ করুন।" }),
   offender: z.string().min(1, { message: "অভিযুক্তের নাম উল্লেখ করুন।" }),
+  offender_other: z.string().optional(),
   newsSource: z.string().min(3, { message: "সংবাদের উৎস উল্লেখ করুন।" }),
   newsLink: z.string().url({ message: "অনুগ্রহ করে একটি বৈধ লিংক দিন।" }),
   imageUrl: z.string().url({ message: "অনুগ্রহ করে একটি বৈধ ছবির লিংক দিন।" }).optional().or(z.literal('')),
   imageHint: z.string().optional(),
+}).refine(data => {
+    if (data.offender === 'অন্যান্য') {
+        return !!data.offender_other;
+    }
+    return true;
+}, {
+    message: "অন্যান্য অভিযুক্তের নাম লিখুন।",
+    path: ["offender_other"],
 });
 
 type ArticleFormValues = z.infer<typeof formSchema>;
@@ -56,14 +65,16 @@ export function ArticleForm({ initialData }: ArticleFormProps) {
   const firestore = useFirestore();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isOtherOffender = !offenders.includes(initialData?.offender || '');
 
-  const defaultValues = {
+  const defaultValues: Partial<ArticleFormValues> = {
       title: initialData?.title || "",
       category: initialData?.category || "",
       content: initialData?.content || "",
       publicationDate: initialData?.publicationDate || new Date().toISOString(),
       location: initialData?.location || "",
-      offender: initialData?.offender || "",
+      offender: (initialData?.offender && offenders.includes(initialData.offender)) ? initialData.offender : 'অন্যান্য',
+      offender_other: isOtherOffender ? initialData?.offender : '',
       newsSource: initialData?.newsSource || "",
       newsLink: initialData?.newsLink || "",
       imageUrl: initialData?.imageUrl || "",
@@ -75,21 +86,33 @@ export function ArticleForm({ initialData }: ArticleFormProps) {
     defaultValues,
   });
 
+  const watchedOffender = useWatch({ control: form.control, name: 'offender' });
+
   useEffect(() => {
     if (initialData) {
-      form.reset({
-        ...initialData,
-        publicationDate: initialData.publicationDate || new Date().toISOString(),
-      });
+        const isOther = !offenders.includes(initialData.offender || '');
+        form.reset({
+            ...initialData,
+            publicationDate: initialData.publicationDate || new Date().toISOString(),
+            offender: isOther ? 'অন্যান্য' : initialData.offender,
+            offender_other: isOther ? initialData.offender : '',
+        });
     }
   }, [initialData, form]);
 
   const onSubmit = async (data: ArticleFormValues) => {
     if (!firestore) return;
     setIsSubmitting(true);
+    
+    const finalData = { ...data };
+    if (data.offender === 'অন্যান্য') {
+        finalData.offender = data.offender_other || 'অন্যান্য';
+    }
+    delete (finalData as any).offender_other;
+
     try {
       const docRef = initialData?.id ? doc(firestore, 'articles', initialData.id) : doc(collection(firestore, "articles"));
-      await setDoc(docRef, { ...data, id: docRef.id }, { merge: true });
+      await setDoc(docRef, { ...finalData, id: docRef.id }, { merge: true });
 
       toast({
         title: "সাফল্য!",
@@ -165,7 +188,7 @@ export function ArticleForm({ initialData }: ArticleFormProps) {
                           {field.value ? (
                             format(new Date(field.value), "PPP")
                           ) : (
-                            <span>একটি তারিখ বাছাই করুন</span>
+                            <span> একটি তারিখ বাছাই করুন</span>
                           )}
                           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                         </Button>
@@ -246,6 +269,22 @@ export function ArticleForm({ initialData }: ArticleFormProps) {
               )}
             />
         </div>
+        
+        {watchedOffender === 'অন্যান্য' && (
+            <FormField
+              control={form.control}
+              name="offender_other"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>অন্যান্য অভিযুক্তের নাম</FormLabel>
+                  <FormControl>
+                    <Input placeholder="অভিযুক্তের নাম লিখুন" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+        )}
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
              <FormField
