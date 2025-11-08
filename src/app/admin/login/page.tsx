@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useAuth as useFirebaseAuth } from '@/firebase/provider';
@@ -17,8 +17,15 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { auth } = useFirebaseAuth();
+  const { auth, user, loading: authLoading } = useFirebaseAuth();
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (!authLoading && user) {
+      router.push('/admin');
+    }
+  }, [user, authLoading, router]);
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,9 +49,17 @@ export default function AdminLoginPage() {
       setLoading(false);
     }
   };
+  
+  if (authLoading || user) {
+    return (
+       <div className="flex min-h-screen w-full items-center justify-center bg-background">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+       </div>
+    )
+  }
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-muted/40">
+    <div className="flex min-h-screen w-full items-center justify-center bg-background">
       <Card className="mx-auto max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">অ্যাডমিন লগইন</CardTitle>
