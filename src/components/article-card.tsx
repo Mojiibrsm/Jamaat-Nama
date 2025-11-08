@@ -13,7 +13,9 @@ export function ArticleCard({ article }: { article: Article }) {
   const [formattedDate, setFormattedDate] = useState('');
 
   useEffect(() => {
-    setFormattedDate(format(new Date(article.publicationDate), 'MMMM d, yyyy'));
+    if (article.publicationDate) {
+      setFormattedDate(format(new Date(article.publicationDate), 'MMMM d, yyyy'));
+    }
   }, [article.publicationDate]);
 
   return (
@@ -37,7 +39,7 @@ export function ArticleCard({ article }: { article: Article }) {
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground line-clamp-3 text-sm">
-            {article.content}
+            {article.content.split('\n')[0]}
           </p>
           <div className="flex items-center text-xs text-muted-foreground mt-4">
             <CalendarDays className="mr-2 h-4 w-4" />

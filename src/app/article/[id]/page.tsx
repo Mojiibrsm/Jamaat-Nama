@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { articles, Article } from '@/lib/data';
 import { Header } from '@/components/header';
 import { Badge } from '@/components/ui/badge';
-import { CalendarDays } from 'lucide-react';
+import { CalendarDays, MapPin, User, Swords, Newspaper, Link as LinkIcon, Bookmark } from 'lucide-react';
 import { format } from 'date-fns';
 import { ArticleSummary } from '@/components/article-summary';
 import { Separator } from '@/components/ui/separator';
@@ -35,13 +35,13 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
             <Header />
             <main className="flex-1 py-8">
                 <article className="container mx-auto px-4 md:px-6 max-w-4xl">
-                    <div className="mb-6 space-y-4">
-                        <div className="h-6 w-24 bg-muted rounded animate-pulse"></div>
-                        <div className="h-12 md:h-14 bg-muted rounded animate-pulse w-full"></div>
-                        <div className="flex items-center text-sm text-muted-foreground">
-                            <CalendarDays className="mr-2 h-4 w-4" />
-                            <div className="h-4 w-32 bg-muted rounded animate-pulse"></div>
-                        </div>
+                    <div className="space-y-4 mb-8">
+                      <div className="h-10 md:h-12 bg-muted rounded animate-pulse w-full"></div>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        {[...Array(6)].map((_, i) => (
+                          <div key={i} className="h-6 bg-muted rounded animate-pulse"></div>
+                        ))}
+                      </div>
                     </div>
                     <div className="relative h-64 md:h-96 w-full mb-8 rounded-lg overflow-hidden shadow-lg bg-muted animate-pulse"></div>
                     <div className="h-10 w-48 bg-muted rounded animate-pulse mb-8"></div>
@@ -62,21 +62,41 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
     notFound();
   }
 
+  const metadataItems = [
+    { icon: CalendarDays, label: formattedDate },
+    { icon: Badge, label: article.category, isBadge: true },
+    { icon: MapPin, label: article.location },
+    { icon: User, label: `অপরাধী : ${article.offender}` },
+    { icon: Swords, label: `আক্রান্ত : ${article.victim}` },
+    { icon: Newspaper, label: `সংবাদ সূত্র : ${article.newsSource}` },
+    { icon: LinkIcon, label: 'নিউজ লিংক', href: article.newsLink },
+    { icon: Bookmark, label: `আর্কাইভ আইডি : ${article.id}` },
+  ];
+
   return (
     <div className="flex min-h-screen w-full flex-col">
       <Header />
       <main className="flex-1 py-8">
         <article className="container mx-auto px-4 md:px-6 max-w-4xl">
-          <div className="mb-6 space-y-4">
-            <Badge variant="secondary" className="w-fit">{article.category}</Badge>
-            <h1 className="text-4xl md:text-5xl font-headline font-bold text-primary leading-tight">
-              {article.title}
-            </h1>
-            <div className="flex items-center text-sm text-muted-foreground">
-              <CalendarDays className="mr-2 h-4 w-4" />
-              <span>{formattedDate}</span>
-            </div>
+          <h1 className="text-3xl md:text-4xl font-headline font-bold text-primary leading-tight mb-6">
+            {article.title}
+          </h1>
 
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4 mb-8 text-sm text-foreground/80">
+            {metadataItems.map((item, index) => (
+              <div key={index} className="flex items-center gap-2">
+                <item.icon className="w-4 h-4 text-primary" />
+                {item.href ? (
+                  <a href={item.href} target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-primary transition-colors">
+                    {item.label}
+                  </a>
+                ) : item.isBadge ? (
+                    <Badge variant="secondary">{item.label}</Badge>
+                ) : (
+                  <span>{item.label}</span>
+                )}
+              </div>
+            ))}
           </div>
           
           <div className="relative h-64 md:h-96 w-full mb-8 rounded-lg overflow-hidden shadow-lg">
@@ -95,7 +115,7 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
           <Separator className="my-8" />
 
           <div className="text-lg text-foreground/90 space-y-6 leading-relaxed">
-            {article.content.split('\\n').map((paragraph, index) => (
+            {article.content.split('\n').map((paragraph, index) => (
               paragraph.trim() && <p key={index}>{paragraph.trim()}</p>
             ))}
           </div>
@@ -104,27 +124,3 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
     </div>
   );
 }
-
-// Keeping generateStaticParams, but metadata generation needs to be handled differently
-// for a fully client-rendered approach. For now, we will make it a dynamic page.
-// We can re-add static rendering if needed.
-/*
-export async function generateStaticParams() {
-    return articles.map((article) => ({
-      id: article.id,
-    }));
-}
-
-export async function generateMetadata({ params }: { params: { id: string } }) {
-    const article = await getArticle(params.id);
-    if (!article) {
-        return {
-            title: 'Article Not Found'
-        }
-    }
-    return {
-        title: `${article.title} | Jamaat Nama`,
-        description: article.content.substring(0, 150)
-    }
-}
-*/
