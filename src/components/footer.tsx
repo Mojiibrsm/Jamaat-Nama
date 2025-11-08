@@ -1,5 +1,6 @@
+
 import Link from 'next/link';
-import { Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
+import { Facebook, Instagram } from 'lucide-react';
 import Image from 'next/image';
 
 export function Footer() {
@@ -20,9 +21,7 @@ export function Footer() {
             <p className="text-muted-foreground">সত্য জানার প্ল্যাটফর্ম।</p>
             <div className="flex space-x-4 mt-6">
               <a href="#" className="text-muted-foreground hover:text-primary transition-colors"><Facebook size={20} /></a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors"><Twitter size={20} /></a>
               <a href="#" className="text-muted-foreground hover:text-primary transition-colors"><Instagram size={20} /></a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors"><Youtube size={20} /></a>
             </div>
           </div>
           <div className="md:col-span-2">
