@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Button } from './ui/button';
 import { Menu } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
+import Image from 'next/image';
 
 const navLinks = [
     { href: '/', label: 'সব খবর' },
@@ -23,8 +24,14 @@ export function Header() {
             ))}
         </nav>
         <div className="flex justify-center w-1/3">
-            <Link href="/" className="text-2xl font-headline font-bold">
-              Jamaat Nama
+            <Link href="/">
+              <Image 
+                src="https://ik.imagekit.io/uekohag7w/%E0%A6%9C%E0%A6%BE%E0%A6%AE%E0%A6%BE%E0%A7%9F%E0%A6%BE%E0%A6%A4%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A6%BE_20251108_185925_0000.png"
+                alt="Jamaat Nama Logo"
+                width={150}
+                height={40}
+                className="object-contain"
+              />
             </Link>
         </div>
         <nav className="hidden md:flex items-center justify-end gap-6 text-sm font-medium w-1/3">
@@ -44,8 +51,14 @@ export function Header() {
                 </SheetTrigger>
                 <SheetContent side="right" className="bg-primary text-primary-foreground">
                     <div className="flex flex-col gap-6 p-6">
-                        <Link href="/" className="text-2xl font-headline font-bold">
-                            Jamaat Nama
+                         <Link href="/">
+                            <Image 
+                                src="https://ik.imagekit.io/uekohag7w/%E0%A6%9C%E0%A6%BE%E0%A6%AE%E0%A6%BE%E0%A7%9F%E0%A6%BE%E0%A6%A4%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A6%BE_20251108_185925_0000.png"
+                                alt="Jamaat Nama Logo"
+                                width={150}
+                                height={40}
+                                className="object-contain"
+                            />
                         </Link>
                         <nav className="flex flex-col gap-4">
                             {navLinks.map((link) => (

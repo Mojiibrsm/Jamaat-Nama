@@ -111,8 +111,14 @@ export default function PrintArticlePage({ params }: { params: { category: strin
       <main className="py-8 bg-white text-black">
         <div className="container mx-auto px-4 md:px-6 max-w-4xl mb-8">
             <header className="flex justify-between items-center mb-8 pb-4 border-b">
-                <div className="text-3xl font-headline font-bold text-primary">
-                    Jamaat Nama
+                 <div className="text-3xl font-headline font-bold text-primary">
+                    <Image 
+                      src="https://ik.imagekit.io/uekohag7w/%E0%A6%9C%E0%A6%BE%E0%A6%AE%E0%A6%BE%E0%A7%9F%E0%A6%BE%E0%A6%A4%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A6%BE_20251108_185925_0000.png"
+                      alt="Jamaat Nama Logo"
+                      width={180}
+                      height={48}
+                      className="object-contain"
+                    />
                 </div>
                 <div className="no-print space-x-2">
                     <Button onClick={handleDownloadImage} variant="outline">

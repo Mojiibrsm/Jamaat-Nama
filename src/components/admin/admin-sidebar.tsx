@@ -8,6 +8,7 @@ import { Home, Newspaper, Settings, FileText, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/firebase/provider';
 import { signOut } from 'firebase/auth';
+import Image from 'next/image';
 
 const navItems = [
   { href: '/admin', icon: Home, label: 'ড্যাশবোর্ড' },
@@ -37,7 +38,13 @@ export function AdminSidebar() {
             href="/"
             className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
           >
-            <span className="text-xl">নামা</span>
+            <Image 
+              src="https://ik.imagekit.io/uekohag7w/%E0%A6%9C%E0%A6%BE%E0%A6%AE%E0%A6%BE%E0%A7%9F%E0%A6%BE%E0%A6%A4%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A6%BE_20251108_185925_0000.png"
+              alt="Jamaat Nama Logo"
+              width={32}
+              height={32}
+              className="object-contain invert"
+            />
             <span className="sr-only">Jamaat Nama</span>
           </Link>
           {navItems.map((item) => (

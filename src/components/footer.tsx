@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
+import Image from 'next/image';
 
 export function Footer() {
   return (
@@ -7,8 +8,14 @@ export function Footer() {
       <div className="container mx-auto px-4 md:px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
           <div className="md:col-span-1 flex flex-col items-center md:items-start">
-            <Link href="/" className="text-3xl font-headline font-bold text-primary mb-2 inline-block">
-              Jamaat Nama
+            <Link href="/" className="mb-2 inline-block">
+               <Image 
+                src="https://ik.imagekit.io/uekohag7w/%E0%A6%9C%E0%A6%BE%E0%A6%AE%E0%A6%BE%E0%A7%9F%E0%A6%BE%E0%A6%A4%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A6%BE_20251108_185925_0000.png"
+                alt="Jamaat Nama Logo"
+                width={180}
+                height={48}
+                className="object-contain"
+              />
             </Link>
             <p className="text-muted-foreground">সত্য জানার প্ল্যাটফর্ম।</p>
             <div className="flex space-x-4 mt-6">

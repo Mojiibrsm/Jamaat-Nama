@@ -35,7 +35,13 @@ export const ShareCard = React.forwardRef<HTMLDivElement, ShareCardProps>(({ art
         </div>
         <footer className="mt-auto flex justify-between items-center pt-8 border-t border-border">
           <div className="text-4xl font-headline font-bold text-primary">
-            Jamaat Nama
+            <Image 
+                src="https://ik.imagekit.io/uekohag7w/%E0%A6%9C%E0%A6%BE%E0%A6%AE%E0%A6%BE%E0%A7%9F%E0%A6%BE%E0%A6%A4%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A6%BE_20251108_185925_0000.png"
+                alt="Jamaat Nama Logo"
+                width={180}
+                height={48}
+                className="object-contain"
+            />
           </div>
           <p className="text-xl text-muted-foreground">jamaatnama.com</p>
         </footer>
