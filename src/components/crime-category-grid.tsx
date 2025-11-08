@@ -1,6 +1,6 @@
 
 import { Card } from '@/components/ui/card';
-import { VenetianMask, LandPlot, Handshake, Landmark, Dna, PackageSearch, Ban, Skull } from 'lucide-react';
+import { VenetianMask, LandPlot, Handshake, Landmark, Dna, PackageSearch, Ban, Skull, ShieldOff, Fingerprint, ScanEye, PersonStanding } from 'lucide-react';
 import { SearchSection } from './search-section';
 import type { SearchSectionProps } from './search-section';
 
@@ -13,10 +13,14 @@ const crimeCategories = [
   { name: 'দখল', count: '38+', Icon: LandPlot },
   { name: 'ইসলামবিদ্বেষ', count: '9+', Icon: Landmark },
   { name: 'মাদক', count: '46+', Icon: Dna },
+  { name: 'সন্ত্রাস', count: '102+', Icon: ShieldOff },
+  { name: 'দুর্নীতি', count: '88+', Icon: Fingerprint },
+  { name: 'সাইবার অপরাধ', count: '25+', Icon: ScanEye },
+  { name: 'নারী নির্যাতন', count: '63+', Icon: PersonStanding },
 ];
 
 const CategoryCard = ({ name, count, Icon }: { name: string; count: string; Icon: React.ElementType }) => (
-  <Card className="flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/50 transition-all duration-300 transform hover:-translate-y-2 motion-safe:hover:scale-105 text-center shadow-md border-border/80 hover:border-primary/50">
+  <Card className="flex flex-col items-center justify-center p-6 bg-card hover:bg-muted/50 transition-all duration-300 transform hover:-translate-y-2 motion-safe:hover:scale-105 text-center shadow-md border-border/80 hover:border-primary/50">
     <Icon className="w-12 h-12 text-primary mb-3" />
     <p className="text-3xl font-bold text-foreground">{count}</p>
     <p className="text-md font-medium text-muted-foreground mt-1">{name}</p>
@@ -33,7 +37,7 @@ export function CrimeCategoryGrid(props: SearchSectionProps) {
         <h2 className="text-3xl md:text-4xl font-headline font-bold text-center text-primary mb-10 mt-16">
           অপরাধ ক্যাটাগরি
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
           {crimeCategories.map((category) => (
             <CategoryCard key={category.name} {...category} />
           ))}
