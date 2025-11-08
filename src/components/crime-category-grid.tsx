@@ -16,7 +16,7 @@ const crimeCategories = [
 ];
 
 const CategoryCard = ({ name, count, Icon }: { name: string; count: string; Icon: React.ElementType }) => (
-  <Card className="flex flex-col items-center justify-center p-6 bg-card hover:bg-muted/50 transition-all duration-300 transform hover:-translate-y-2 motion-safe:hover:scale-105 text-center shadow-md border-border/80 hover:border-primary/50">
+  <Card className="flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/50 transition-all duration-300 transform hover:-translate-y-2 motion-safe:hover:scale-105 text-center shadow-md border-border/80 hover:border-primary/50">
     <Icon className="w-12 h-12 text-primary mb-3" />
     <p className="text-3xl font-bold text-foreground">{count}</p>
     <p className="text-md font-medium text-muted-foreground mt-1">{name}</p>
@@ -25,7 +25,7 @@ const CategoryCard = ({ name, count, Icon }: { name: string; count: string; Icon
 
 export function CrimeCategoryGrid(props: SearchSectionProps) {
   return (
-    <section className="bg-background py-12 md:py-20 animate-fade-in-up">
+    <section className="py-12 md:py-20 animate-fade-in-up">
       <div className="container mx-auto px-4 md:px-6">
         
         <SearchSection {...props} />
