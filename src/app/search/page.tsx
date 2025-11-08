@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Suspense } from 'react';
@@ -8,6 +9,7 @@ import { SearchSection } from '@/components/search-section';
 import { articles } from '@/lib/data';
 import { useMemo, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { Hero } from '@/components/hero';
 
 function SearchResults() {
   const searchParams = useSearchParams();
@@ -48,6 +50,7 @@ function SearchResults() {
     <div className="flex min-h-screen w-full flex-col bg-background">
       <Header />
       <main className="flex-1">
+        <Hero />
         <section className="py-12 md:py-16">
           <div className="container mx-auto px-4 md:px-6">
             <SearchSection 
