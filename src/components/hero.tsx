@@ -33,15 +33,15 @@ export function Hero() {
         <div className="container mx-auto px-4 md:px-6 flex flex-col md:flex-row justify-center items-center gap-8">
             <div className="text-center">
                 <p className="text-4xl md:text-5xl font-bold">175+</p>
-                <p className="text-sm md:text-base text-white/80">নিবন্ধিত মামলা</p>
+                <p className="text-sm md:text-base text-white/80">মোট সংবাদ</p>
             </div>
             <div className="text-center">
                 <p className="text-4xl md:text-5xl font-bold">70+</p>
-                <p className="text-sm md:text-base text-white/80">দণ্ডপ্রাপ্ত অপরাধী</p>
+                <p className="text-sm md:text-base text-white/80">মোট অপরাধ</p>
             </div>
             <div className="text-center">
                 <p className="text-4xl md:text-5xl font-bold">797+</p>
-                <p className="text-sm md:text-base text-white/80">ঘটনার বিবরণ</p>
+                <p className="text-sm md:text-base text-white/80">মোট ধর্ষণ</p>
             </div>
         </div>
       </div>
