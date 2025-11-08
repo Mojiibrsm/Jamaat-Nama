@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { articles, Article } from '@/lib/data';
 import { Header } from '@/components/header';
 import { Badge } from '@/components/ui/badge';
-import { CalendarDays, MapPin, User, Swords, Newspaper, Link as LinkIcon, Bookmark } from 'lucide-react';
+import { CalendarDays, MapPin, User, Newspaper, Link as LinkIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { ArticleSummary } from '@/components/article-summary';
 import { Separator } from '@/components/ui/separator';
@@ -63,14 +63,12 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
   }
 
   const metadataItems = [
-    { icon: CalendarDays, label: formattedDate },
+    { icon: CalendarDays, label: `প্রকাশের তারিখ: ${formattedDate}` },
     { icon: Badge, label: article.category, isBadge: true },
-    { icon: MapPin, label: article.location },
-    { icon: User, label: `অপরাধী : ${article.offender}` },
-    { icon: Swords, label: `আক্রান্ত : ${article.victim}` },
-    { icon: Newspaper, label: `সংবাদ সূত্র : ${article.newsSource}` },
-    { icon: LinkIcon, label: 'নিউজ লিংক', href: article.newsLink },
-    { icon: Bookmark, label: `আর্কাইভ আইডি : ${article.id}` },
+    { icon: MapPin, label: `স্থান: ${article.location}` },
+    { icon: User, label: `অভিযুক্ত: ${article.offender}` },
+    { icon: Newspaper, label: `সূত্র: ${article.newsSource}` },
+    { icon: LinkIcon, label: 'মূল খবর', href: article.newsLink },
   ];
 
   return (
