@@ -2,10 +2,12 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
-import { Home, Newspaper, Settings, FileText } from 'lucide-react';
+import { Home, Newspaper, Settings, FileText, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/firebase/provider';
+import { signOut } from 'firebase/auth';
 
 const navItems = [
   { href: '/admin', icon: Home, label: 'ড্যাশবোর্ড' },
@@ -15,6 +17,17 @@ const navItems = [
 
 export function AdminSidebar() {
   const pathname = usePathname();
+  const { auth } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      router.push('/admin/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
 
   return (
     <TooltipProvider>
@@ -61,6 +74,18 @@ export function AdminSidebar() {
                     </Link>
                 </TooltipTrigger>
                 <TooltipContent side="right">সেটিংস</TooltipContent>
+            </Tooltip>
+             <Tooltip>
+                <TooltipTrigger asChild>
+                    <button
+                        onClick={handleLogout}
+                        className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                    >
+                        <LogOut className="h-5 w-5" />
+                        <span className="sr-only">Logout</span>
+                    </button>
+                </TooltipTrigger>
+                <TooltipContent side="right">লগআউট</TooltipContent>
             </Tooltip>
         </nav>
       </aside>

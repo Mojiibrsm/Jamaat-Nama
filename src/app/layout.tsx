@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Footer } from "@/components/footer";
-import { FirebaseProvider } from "@/firebase/provider";
+import { FirebaseProvider, AuthProvider } from "@/firebase/provider";
 
 export const metadata: Metadata = {
   title: "Jamaat Nama",
@@ -23,11 +23,13 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased flex flex-col min-h-screen">
         <FirebaseProvider>
-          <div className="flex-grow">
-            {children}
-          </div>
-          <Footer />
-          <Toaster />
+          <AuthProvider>
+            <div className="flex-grow">
+              {children}
+            </div>
+            <Footer />
+            <Toaster />
+          </AuthProvider>
         </FirebaseProvider>
       </body>
     </html>
