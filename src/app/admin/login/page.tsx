@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
+import Image from 'next/image';
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('');
@@ -59,9 +60,18 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-background">
-      <Card className="mx-auto max-w-sm">
-        <CardHeader>
+    <div className="flex min-h-screen w-full flex-col items-center justify-center bg-muted/40">
+       <Card className="mx-auto w-full max-w-sm">
+        <CardHeader className="text-center">
+            <div className="mx-auto mb-4">
+                 <Image 
+                    src="https://ik.imagekit.io/uekohag7w/%E0%A6%9C%E0%A6%BE%E0%A6%AE%E0%A6%BE%E0%A7%9F%E0%A6%BE%E0%A6%A4%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A6%BE_20251108_185925_0000.png"
+                    alt="Jamaat Nama Logo"
+                    width={180}
+                    height={48}
+                    className="object-contain"
+                />
+            </div>
           <CardTitle className="text-2xl">অ্যাডমিন লগইন</CardTitle>
           <CardDescription>
             অ্যাডমিন প্যানেল অ্যাক্সেস করতে আপনার ইমেইল ও পাসওয়ার্ড দিন।
