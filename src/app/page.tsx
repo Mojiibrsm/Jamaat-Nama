@@ -5,8 +5,8 @@ import { Header } from "@/components/header";
 import { Hero } from "@/components/hero";
 import { CrimeCategoryGrid } from "@/components/crime-category-grid";
 import { NewsFeed } from "@/components/news-feed";
-import { articles } from "@/lib/data";
 import { useRouter } from 'next/navigation';
+import { useArticles } from '@/hooks/use-articles';
 
 export default function Home() {
   const router = useRouter();
@@ -15,9 +15,12 @@ export default function Home() {
   const [selectedLocation, setSelectedLocation] = useState('সব');
   const [selectedOffender, setSelectedOffender] = useState('সব');
 
-  const categories = useMemo(() => ['সব', 'খুন', 'ধর্ষণ', 'চাঁদাবাজি', 'হামলা / সংঘর্ষ', 'লুটপাট', 'দখল', 'ইসলামবিদ্বেষ', 'মাদক', 'সন্ত্রাস', 'দুর্নীতি', 'সাইবার অপরাধ', 'নারী নির্যাতন'], []);
-  const locations = useMemo(() => ['সব', 'ঢাকা', 'চট্টগ্রাম', 'রাজশাহী', 'খুলনা', 'সিলেট', 'বরিশাল', 'রংপুর', 'ময়মনসিংহ', 'গাজীপুর', 'নারায়ণগঞ্জ', 'কুমিল্লা', 'যশোর', 'দিনাজপুর', 'বগুড়া'], []);
-  const offenders = ['সব', 'জামায়াত', 'শিবির', 'বিএনপি', 'আওয়ামী লীগ', 'অন্যান্য'];
+  const { articles, loading } = useArticles();
+
+  const categories = useMemo(() => ['সব', ...new Set(articles.map(a => a.category))], [articles]);
+  const locations = useMemo(() => ['সব', ...new Set(articles.map(a => a.location))], [articles]);
+  const offenders = useMemo(() => ['সব', ...new Set(articles.map(a => a.offender))], [articles]);
+
 
   const handleSearch = (searchState: { term: string; category: string; location: string; offender: string }) => {
     const { term, category, location, offender } = searchState;
@@ -51,6 +54,7 @@ export default function Home() {
         />
         <NewsFeed 
           articles={articles} 
+          loading={loading}
           searchTerm={""} // Initial feed is unfiltered
           categoryFilter={"সব"}
           locationFilter={"সব"}

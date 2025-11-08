@@ -6,10 +6,10 @@ import { useSearchParams } from 'next/navigation';
 import { Header } from '@/components/header';
 import { NewsFeed } from '@/components/news-feed';
 import { SearchSection } from '@/components/search-section';
-import { articles } from '@/lib/data';
 import { useMemo, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Hero } from '@/components/hero';
+import { useArticles } from '@/hooks/use-articles';
 
 function SearchResults() {
   const searchParams = useSearchParams();
@@ -20,6 +20,8 @@ function SearchResults() {
   const [selectedLocation, setSelectedLocation] = useState(searchParams.get('location') || 'সব');
   const [selectedOffender, setSelectedOffender] = useState(searchParams.get('offender') || 'সব');
 
+  const { articles, loading } = useArticles();
+
   useEffect(() => {
     setSearchTerm(searchParams.get('q') || '');
     setSelectedCategory(searchParams.get('category') || 'সব');
@@ -27,9 +29,10 @@ function SearchResults() {
     setSelectedOffender(searchParams.get('offender') || 'সব');
   }, [searchParams]);
 
-  const categories = useMemo(() => ['সব', 'খুন', 'ধর্ষণ', 'চাঁদাবাজি', 'হামলা / সংঘর্ষ', 'লুটপাট', 'দখল', 'ইসলামবিদ্বেষ', 'মাদক', 'সন্ত্রাস', 'দুর্নীতি', 'সাইবার অপরাধ', 'নারী নির্যাতন'], []);
-  const locations = useMemo(() => ['সব', 'ঢাকা', 'চট্টগ্রাম', 'রাজশাহী', 'খুলনা', 'সিলেট', 'বরিশাল', 'রংপুর', 'ময়মনসিংহ', 'গাজীপুর', 'নারায়ণগঞ্জ', 'কুমিল্লা', 'যশোর', 'দিনাজপুর', 'বগুড়া'], []);
-  const offenders = ['সব', 'জামায়াত', 'শিবির', 'বিএনপি', 'আওয়ামী লীগ', 'অন্যান্য'];
+  const categories = useMemo(() => ['সব', ...new Set(articles.map(a => a.category))], [articles]);
+  const locations = useMemo(() => ['সব', ...new Set(articles.map(a => a.location))], [articles]);
+  const offenders = useMemo(() => ['সব', ...new Set(articles.map(a => a.offender))], [articles]);
+
 
   const handleSearch = (newSearchState: { term: string; category: string; location: string; offender: string }) => {
     const { term, category, location, offender } = newSearchState;
@@ -71,6 +74,7 @@ function SearchResults() {
         </section>
         <NewsFeed 
           articles={articles} 
+          loading={loading}
           searchTerm={searchTerm}
           categoryFilter={selectedCategory}
           locationFilter={selectedLocation}

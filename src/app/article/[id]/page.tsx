@@ -2,7 +2,7 @@
 'use client';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { articles, Article } from '@/lib/data';
+import { Article } from '@/lib/data';
 import { Header } from '@/components/header';
 import { Badge } from '@/components/ui/badge';
 import { CalendarDays, MapPin, User, Newspaper, Link as LinkIcon } from 'lucide-react';
@@ -10,19 +10,68 @@ import { format } from 'date-fns';
 import { ArticleSummary } from '@/components/article-summary';
 import { Separator } from '@/components/ui/separator';
 import { useEffect, useState } from 'react';
+import { useFirestore } from '@/firebase/provider';
+import { doc, getDoc } from 'firebase/firestore';
+import { Skeleton } from '@/components/ui/skeleton';
 
-async function getArticle(id: string): Promise<Article | undefined> {
-  return articles.find(article => article.id === id);
+async function getArticle(firestore: any, id: string): Promise<Article | null> {
+  const docRef = doc(firestore, 'articles', id);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    return { id: docSnap.id, ...docSnap.data() } as Article;
+  }
+  return null;
 }
 
-export default async function ArticlePage({ params }: { params: { id: string } }) {
-  const article = await getArticle(params.id);
+export default function ArticlePage({ params }: { params: { id: string } }) {
+  const firestore = useFirestore();
+  const [article, setArticle] = useState<Article | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchArticle = async () => {
+      if (!firestore || !params.id) return;
+      setLoading(true);
+      const articleData = await getArticle(firestore, params.id);
+      if (articleData) {
+        setArticle(articleData);
+      } else {
+        notFound();
+      }
+      setLoading(false);
+    };
+
+    fetchArticle();
+  }, [firestore, params.id]);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen w-full flex-col">
+        <Header />
+        <main className="flex-1 py-8">
+          <article className="container mx-auto px-4 md:px-6 max-w-4xl">
+            <Skeleton className="h-12 w-3/4 mb-6" />
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4 mb-8">
+              {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-6 w-full" />)}
+            </div>
+            <Skeleton className="relative h-64 md:h-96 w-full mb-8 rounded-lg" />
+            <Skeleton className="h-10 w-48 mb-8" />
+            <div className="space-y-4">
+              <Skeleton className="h-5 w-full" />
+              <Skeleton className="h-5 w-full" />
+              <Skeleton className="h-5 w-5/6" />
+            </div>
+          </article>
+        </main>
+      </div>
+    );
+  }
 
   if (!article) {
-    notFound();
+    return notFound();
   }
   
-  const formattedDate = format(new Date(article.publicationDate), 'MMMM d, yyyy');
+  const formattedDate = article.publicationDate ? format(new Date(article.publicationDate), 'MMMM d, yyyy') : '';
 
   const metadataItems = [
     { icon: CalendarDays, label: `প্রকাশিত: ${formattedDate}` },
@@ -59,16 +108,18 @@ export default async function ArticlePage({ params }: { params: { id: string } }
             ))}
           </div>
           
-          <div className="relative h-64 md:h-96 w-full mb-8 rounded-lg overflow-hidden shadow-lg">
-            <Image
-              src={article.imageUrl}
-              alt={article.title}
-              fill
-              className="object-cover"
-              data-ai-hint={article.imageHint}
-              priority
-            />
-          </div>
+          {article.imageUrl && (
+            <div className="relative h-64 md:h-96 w-full mb-8 rounded-lg overflow-hidden shadow-lg">
+                <Image
+                src={article.imageUrl}
+                alt={article.title}
+                fill
+                className="object-cover"
+                data-ai-hint={article.imageHint || 'news article'}
+                priority
+                />
+            </div>
+          )}
 
           <ArticleSummary content={article.content} />
           

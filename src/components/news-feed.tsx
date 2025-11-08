@@ -1,26 +1,30 @@
+
 'use client';
 import React, { useState, useMemo } from 'react';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArticleCard } from '@/components/article-card';
 import type { Article } from '@/lib/data';
+import { Skeleton } from './ui/skeleton';
 
 interface NewsFeedProps {
   articles: Article[];
+  loading: boolean;
   searchTerm: string;
   categoryFilter: string;
   locationFilter: string;
   offenderFilter: string;
 }
 
-export function NewsFeed({ articles, searchTerm, categoryFilter, locationFilter, offenderFilter }: NewsFeedProps) {
+export function NewsFeed({ articles, loading, searchTerm, categoryFilter, locationFilter, offenderFilter }: NewsFeedProps) {
   const [selectedTab, setSelectedTab] = useState('সব');
 
   const filteredArticles = useMemo(() => {
+    if (loading) return [];
     return articles.filter(article => {
       const matchesSearch = searchTerm === '' || 
         article.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        article.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        article.location.toLowerCase().includes(searchTerm.toLowerCase());
+        (article.content && article.content.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (article.location && article.location.toLowerCase().includes(searchTerm.toLowerCase()));
         
       const matchesTabCategory = selectedTab === 'সব' || article.category === selectedTab;
       
@@ -28,21 +32,22 @@ export function NewsFeed({ articles, searchTerm, categoryFilter, locationFilter,
 
       const matchesLocation = locationFilter === 'সব' || article.location === locationFilter;
       
-      const matchesOffender = offenderFilter === 'সব' || article.offender.includes(offenderFilter);
+      const matchesOffender = offenderFilter === 'সব' || (article.offender && article.offender.includes(offenderFilter));
 
       return matchesSearch && matchesTabCategory && matchesDropdownCategory && matchesLocation && matchesOffender;
     });
-  }, [articles, searchTerm, selectedTab, categoryFilter, locationFilter, offenderFilter]);
+  }, [articles, loading, searchTerm, selectedTab, categoryFilter, locationFilter, offenderFilter]);
 
   const displayCategories = useMemo(() => {
+    if (loading) return ['সব'];
     const allCategories = ['সব', ...new Set(articles.map(a => a.category))];
      const categoryDisplayMap: { [key: string]: string } = {
       'হামলা / সংঘর্ষ': 'হামলা',
     };
     // This is a temporary fix, ideally the data should be consistent
-    const uniqueCategories = [...new Set(allCategories.map(c => categoryDisplayMap[c] || c))];
+    const uniqueCategories = [...new Set(allCategories.map(c => categoryDisplayMap[c] || c))].filter(Boolean);
     return uniqueCategories;
-  }, [articles]);
+  }, [articles, loading]);
 
 
   return (
@@ -59,7 +64,19 @@ export function NewsFeed({ articles, searchTerm, categoryFilter, locationFilter,
         </Tabs>
       </div>
       
-      {filteredArticles.length > 0 ? (
+      {loading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="space-y-4">
+                    <Skeleton className="h-48 w-full" />
+                    <Skeleton className="h-6 w-24" />
+                    <Skeleton className="h-8 w-3/4" />
+                    <Skeleton className="h-5 w-full" />
+                    <Skeleton className="h-5 w-5/6" />
+                </div>
+            ))}
+        </div>
+      ) : filteredArticles.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredArticles.map(article => (
             <ArticleCard key={article.id} article={article} />
