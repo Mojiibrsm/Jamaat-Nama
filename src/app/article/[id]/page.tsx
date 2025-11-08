@@ -16,18 +16,20 @@ async function getArticle(id: string): Promise<Article | undefined> {
 }
 
 export default function ArticlePage({ params }: { params: { id: string } }) {
-  const { id } = params;
+  const [id, setId] = useState('');
   const [article, setArticle] = useState<Article | null | undefined>(undefined);
   const [formattedDate, setFormattedDate] = useState('');
 
   useEffect(() => {
-    getArticle(id).then(fetchedArticle => {
+    const articleId = params.id;
+    setId(articleId);
+    getArticle(articleId).then(fetchedArticle => {
       setArticle(fetchedArticle);
       if (fetchedArticle) {
         setFormattedDate(format(new Date(fetchedArticle.publicationDate), 'MMMM d, yyyy'));
       }
     });
-  }, [id]);
+  }, [params.id]);
 
   if (article === undefined) {
     // Loading state
@@ -64,12 +66,12 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
   }
 
   const metadataItems = [
-    { icon: CalendarDays, label: `প্রকাশের তারিখ: ${formattedDate}` },
+    { icon: CalendarDays, label: `প্রকাশিত: ${formattedDate}` },
     { icon: Badge, label: article.category, isBadge: true },
     { icon: MapPin, label: `স্থান: ${article.location}` },
     { icon: User, label: `অভিযুক্ত: ${article.offender}` },
     { icon: Newspaper, label: `সূত্র: ${article.newsSource}` },
-    { icon: LinkIcon, label: 'মূল খবর', href: article.newsLink },
+    { icon: LinkIcon, label: 'মূল খবর দেখুন', href: article.newsLink },
   ];
 
   return (
