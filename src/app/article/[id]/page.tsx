@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Article } from '@/lib/data';
 import { Header } from '@/components/header';
 import { Badge } from '@/components/ui/badge';
-import { CalendarDays, MapPin, User, Newspaper, Link as LinkIcon, ExternalLink, Share2, Copy } from 'lucide-react';
+import { CalendarDays, MapPin, User, Newspaper, Link as LinkIcon, ExternalLink, Share2, Copy, Printer } from 'lucide-react';
 import { format } from 'date-fns';
 import { ArticleSummary } from '@/components/article-summary';
 import { Separator } from '@/components/ui/separator';
@@ -48,11 +48,11 @@ export default function ArticlePage({ params }: { params: { id:string } }) {
   };
 
   const handleShare = async () => {
-    if (navigator.share) {
+    if (navigator.share && article) {
       try {
         await navigator.share({
-          title: article?.title,
-          text: `"${article?.title}" খবরটি পড়ুন Jamaat Nama-তে`,
+          title: article.title,
+          text: `"${article.title}" খবরটি পড়ুন Jamaat Nama-তে`,
           url: window.location.href,
         });
       } catch (error) {
@@ -60,6 +60,11 @@ export default function ArticlePage({ params }: { params: { id:string } }) {
       }
     }
   };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -84,7 +89,7 @@ export default function ArticlePage({ params }: { params: { id:string } }) {
         <main className="flex-1 py-8">
           <article className="container mx-auto px-4 md:px-6 max-w-4xl">
             <Skeleton className="h-12 w-3/4 mb-4" />
-            <Skeleton className="h-10 w-40 mb-6" />
+            <Skeleton className="h-6 w-48 mb-6" />
             <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4 mb-8">
               {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-6 w-full" />)}
             </div>
@@ -124,19 +129,6 @@ export default function ArticlePage({ params }: { params: { id:string } }) {
           <h1 className="text-3xl md:text-4xl font-headline font-bold text-primary leading-tight mb-4">
             {article.title}
           </h1>
-          
-          <div className="flex items-center gap-2 mb-6">
-            {isShareSupported && (
-                <Button onClick={handleShare} variant="outline" size="sm">
-                    <Share2 className="mr-2 h-4 w-4" />
-                    শেয়ার করুন
-                </Button>
-            )}
-            <Button onClick={handleCopyLink} variant="outline" size="sm">
-                <Copy className="mr-2 h-4 w-4" />
-                লিংক কপি করুন
-            </Button>
-          </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4 mb-8 text-sm text-foreground/80">
             {metadataItems.map((item, index) => (
@@ -178,16 +170,30 @@ export default function ArticlePage({ params }: { params: { id:string } }) {
             ))}
           </div>
 
-          {article.newsLink && (
-            <div className="my-8 flex justify-center">
-                <Button asChild size="lg">
-                    <a href={article.newsLink} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="mr-2 h-5 w-5" />
-                        মূল সূত্র দেখুন
-                    </a>
-                </Button>
+           <div className="my-8 flex flex-wrap justify-center gap-4">
+              {article.newsLink && (
+                  <Button asChild size="lg">
+                      <a href={article.newsLink} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="mr-2 h-5 w-5" />
+                          মূল সূত্র দেখুন
+                      </a>
+                  </Button>
+              )}
+               {isShareSupported && (
+                  <Button onClick={handleShare} variant="outline" size="lg">
+                      <Share2 className="mr-2 h-5 w-5" />
+                      শেয়ার করুন
+                  </Button>
+              )}
+              <Button onClick={handleCopyLink} variant="outline" size="lg">
+                  <Copy className="mr-2 h-5 w-5" />
+                  লিংক কপি করুন
+              </Button>
+               <Button onClick={handlePrint} variant="outline" size="lg">
+                  <Printer className="mr-2 h-5 w-5" />
+                  প্রিন্ট করুন
+              </Button>
             </div>
-          )}
         </article>
       </main>
     </div>
