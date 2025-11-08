@@ -1,3 +1,4 @@
+
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -17,7 +18,7 @@ const categories = [
 export function Hero() {
   return (
     <section className="relative flex flex-col items-center justify-center text-center text-white">
-      <div className="relative w-full h-[60vh] min-h-[450px] flex items-center justify-center bg-cover bg-center" style={{backgroundImage: "url('https://storage.googleapis.com/stabl-agent-testing/jamaat-e-islami-hero-bg.png')"}}>
+      <div className="relative w-full h-[60vh] min-h-[450px] flex items-center justify-center bg-cover bg-center" style={{backgroundImage: "url('https://ik.imagekit.io/uekohag7w/20251108_144957_0000.png')"}}>
         <div className="absolute inset-0 bg-black/60" />
         <div className="relative z-10 container mx-auto px-4 md:px-6 flex flex-col items-center gap-6 animate-fade-in">
           <h1 className="text-4xl md:text-6xl font-headline font-bold text-white drop-shadow-lg animate-fade-in-up animation-delay-300">
