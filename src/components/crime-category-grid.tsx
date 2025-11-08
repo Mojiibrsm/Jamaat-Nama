@@ -13,7 +13,7 @@ const categories = [
 ];
 
 const CategoryCard = ({ name, count, Icon }: { name: string; count: string; Icon: React.ElementType }) => (
-  <Card className="flex flex-col items-center justify-center p-6 bg-muted/20 hover:bg-muted/50 transition-colors text-center shadow-sm">
+  <Card className="flex flex-col items-center justify-center p-6 bg-muted/20 hover:bg-muted/50 transition-all duration-300 transform hover:-translate-y-2 motion-safe:hover:scale-105 text-center shadow-sm">
     <Icon className="w-12 h-12 text-primary mb-3" />
     <p className="text-3xl font-bold text-foreground">{count}</p>
     <p className="text-md font-medium text-muted-foreground mt-1">{name}</p>
@@ -22,7 +22,7 @@ const CategoryCard = ({ name, count, Icon }: { name: string; count: string; Icon
 
 export function CrimeCategoryGrid() {
   return (
-    <section className="bg-background py-12 md:py-20">
+    <section className="bg-background py-12 md:py-20 animate-fade-in-up">
       <div className="container mx-auto px-4 md:px-6">
         <h2 className="text-3xl md:text-4xl font-headline font-bold text-center text-primary mb-10">
           অপরাধ ক্যাটাগরি

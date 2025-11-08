@@ -9,7 +9,7 @@ import { CalendarDays } from 'lucide-react';
 export function ArticleCard({ article }: { article: Article }) {
   return (
     <Link href={`/article/${article.id}`} className="group">
-      <Card className="h-full overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+      <Card className="h-full overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-2 transform motion-safe:group-hover:scale-105">
         <div className="relative h-48 w-full">
           <Image
             src={article.imageUrl}

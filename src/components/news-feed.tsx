@@ -21,7 +21,7 @@ export function NewsFeed({ articles }: { articles: Article[] }) {
   }, [articles, selectedCategory, searchTerm]);
 
   return (
-    <div className="container mx-auto px-4 py-8 md:px-6">
+    <div className="container mx-auto px-4 py-8 md:px-6 animate-fade-in-up">
       <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="relative w-full md:max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -51,7 +51,7 @@ export function NewsFeed({ articles }: { articles: Article[] }) {
           ))}
         </div>
       ) : (
-        <div className="text-center py-16">
+        <div className="text-center py-16 animate-fade-in">
             <h2 className="text-2xl font-headline font-semibold">কোনো খবর পাওয়া যায়নি</h2>
             <p className="text-muted-foreground mt-2">আপনার অনুসন্ধান বা ফিল্টার পরিবর্তন করে দেখুন।</p>
         </div>
