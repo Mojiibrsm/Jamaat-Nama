@@ -9,8 +9,6 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
-import { UnstructuredLoader } from 'genkit/loaders';
-
 
 const ScrapeArticleInputSchema = z.object({
   articleUrl: z.string().url().describe('The URL of the news article to scrape.'),
@@ -39,17 +37,14 @@ const scrapeArticleFlow = ai.defineFlow(
   },
   async (input) => {
     // First, fetch the content from the URL. This is more reliable.
-    const loader = new UnstructuredLoader(input.articleUrl, {
-      loaderParams: { strategy: 'hi_res' },
-    });
-    const docs = await loader.load();
-    const articleContent = docs.map(d => d.content).join('\n');
+    const response = await fetch(input.articleUrl);
+    const articleContent = await response.text();
 
     // Now, pass the fetched content to the model for extraction.
     const { output } = await ai.generate({
       prompt: `
-        You are an expert news article scraper. Your task is to extract key information from the provided article content.
-        Please extract the title, the full body content, the publication date (in ISO format), 
+        You are an expert news article scraper. Your task is to extract key information from the provided article HTML content.
+        Please extract the title, the full body content (extract only the main article text, clean of ads, navigation, and other boilerplate), the publication date (in ISO format), 
         the most relevant category, the location of the event, and the name of the news source.
         
         Article Content:
@@ -68,4 +63,3 @@ const scrapeArticleFlow = ai.defineFlow(
     return output!;
   }
 );
-
