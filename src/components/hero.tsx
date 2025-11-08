@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search } from 'lucide-react';
+import { Card } from './ui/card';
 
 const categories = [
   { value: 'khun', label: 'খুন' },
@@ -29,19 +30,21 @@ export function Hero() {
           </p>
         </div>
       </div>
-      <div className="w-full py-8 bg-animated-gradient animate-fade-in-up animation-delay-900">
-        <div className="container mx-auto px-4 md:px-6 flex flex-col md:flex-row justify-center items-center gap-8">
-            <div className="text-center">
-                <p className="text-4xl md:text-5xl font-bold">175+</p>
-                <p className="text-sm md:text-base text-white/80">মোট সংবাদ</p>
-            </div>
-            <div className="text-center">
-                <p className="text-4xl md:text-5xl font-bold">70+</p>
-                <p className="text-sm md:text-base text-white/80">মোট অপরাধ</p>
-            </div>
-            <div className="text-center">
-                <p className="text-4xl md:text-5xl font-bold">797+</p>
-                <p className="text-sm md:text-base text-white/80">মোট ধর্ষণ</p>
+      <div className="w-full bg-secondary -mt-16 relative z-20 animate-fade-in-up animation-delay-900">
+        <div className="container mx-auto px-4 md:px-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-10">
+                <Card className="bg-card/80 backdrop-blur-sm p-6 text-center shadow-lg border-primary/20 transform transition-all duration-300 hover:-translate-y-2">
+                    <p className="text-4xl md:text-5xl font-bold text-primary">175+</p>
+                    <p className="text-sm md:text-base text-foreground/80 mt-2 font-medium">মোট সংবাদ</p>
+                </Card>
+                <Card className="bg-card/80 backdrop-blur-sm p-6 text-center shadow-lg border-primary/20 transform transition-all duration-300 hover:-translate-y-2">
+                    <p className="text-4xl md:text-5xl font-bold text-primary">70+</p>
+                    <p className="text-sm md:text-base text-foreground/80 mt-2 font-medium">মোট অপরাধ</p>
+                </Card>
+                <Card className="bg-card/80 backdrop-blur-sm p-6 text-center shadow-lg border-primary/20 transform transition-all duration-300 hover:-translate-y-2">
+                    <p className="text-4xl md:text-5xl font-bold text-primary">88+</p>
+                    <p className="text-sm md:text-base text-foreground/80 mt-2 font-medium">মোট দুর্নীতি</p>
+                </Card>
             </div>
         </div>
       </div>
