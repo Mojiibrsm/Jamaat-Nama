@@ -23,7 +23,7 @@ export function Header() {
                 </Link>
             ))}
         </nav>
-        <div className="flex justify-center w-1/3">
+        <div className="flex justify-center md:w-1/3">
             <Link href="/">
               <Image 
                 src="https://ik.imagekit.io/uekohag7w/%E0%A6%9C%E0%A6%BE%E0%A6%AE%E0%A6%BE%E0%A7%9F%E0%A6%BE%E0%A6%A4%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A6%BE_20251108_185925_0000.png"
@@ -41,7 +41,7 @@ export function Header() {
                 </Link>
             ))}
         </nav>
-        <div className="md:hidden flex justify-end w-1/3">
+        <div className="md:hidden flex-1 flex justify-end">
             <Sheet>
                 <SheetTrigger asChild>
                     <Button variant="ghost" size="icon" className="hover:bg-primary/80">
