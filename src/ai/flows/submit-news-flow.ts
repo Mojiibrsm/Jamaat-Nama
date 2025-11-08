@@ -52,17 +52,23 @@ const submitNewsFlow = ai.defineFlow(
     // 1. Verify reCAPTCHA token
     const secretKey = process.env.RECAPTCHA_SECRET_KEY;
     if (!secretKey) {
-        throw new Error('reCAPTCHA secret key is not set.');
+        console.error('reCAPTCHA secret key is not set in environment variables.');
+        throw new Error('সার্ভার কনফিগারেশনে একটি সমস্যা হয়েছে।');
     }
     const verificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaToken}`;
     
     try {
       const response = await fetch(verificationUrl, { method: 'POST' });
+      if (!response.ok) {
+        console.error('reCAPTCHA server response not OK:', response.statusText);
+        throw new Error('reCAPTCHA যাচাইকরণ সার্ভারের সাথে সংযোগ করা যায়নি।');
+      }
+      
       const verificationResult = await response.json();
 
       if (!verificationResult.success) {
         console.error('reCAPTCHA verification failed:', verificationResult['error-codes']);
-        throw new Error('reCAPTCHA verification failed.');
+        throw new Error(`reCAPTCHA যাচাইকরণ ব্যর্থ হয়েছে: ${verificationResult['error-codes'].join(', ')}`);
       }
 
       // 2. If verification is successful, save data to Firestore
@@ -81,8 +87,11 @@ const submitNewsFlow = ai.defineFlow(
       };
     } catch (error) {
       console.error('Error in submission flow:', error);
-      // Re-throw to be handled by the client
-      throw new Error(error instanceof Error ? error.message : 'An unknown error occurred during submission.');
+      // Re-throw a user-friendly message
+      if (error instanceof Error && error.message.startsWith('reCAPTCHA')) {
+          throw error;
+      }
+      throw new Error('আপনার তথ্য জমা দেওয়ার সময় একটি অপ্রত্যাশিত সমস্যা হয়েছে।');
     }
   }
 );

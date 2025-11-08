@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Info, Loader2 } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { districts } from '@/lib/districts';
 import ReCAPTCHA from "react-google-recaptcha";
@@ -21,6 +21,11 @@ export default function NewsPatanPage() {
   const [selectedOffender, setSelectedOffender] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const categories = ['খুন', 'ধর্ষণ', 'চাঁদাবাজি', 'হামলা / সংঘর্ষ', 'লুটপাট', 'দখল', 'ইসলামবিদ্বেষ', 'মাদক', 'সন্ত্রাস', 'দুর্নীতি', 'সাইবার অপরাধ', 'নারী নির্যাতন', 'অন্যান্য'];
   const offenders = ['জামায়াত', 'শিবির', 'অন্যান্য'];
@@ -30,8 +35,7 @@ export default function NewsPatanPage() {
     setIsSubmitting(true);
 
     const recaptchaToken = await recaptchaRef.current?.executeAsync();
-    recaptchaRef.current?.reset();
-
+    
     if (!recaptchaToken) {
       toast({
         variant: 'destructive',
@@ -41,6 +45,9 @@ export default function NewsPatanPage() {
       setIsSubmitting(false);
       return;
     }
+    
+    // Reset reCAPTCHA after getting token.
+    recaptchaRef.current?.reset();
 
     const formData = new FormData(e.target as HTMLFormElement);
     const submissionData = {
@@ -65,7 +72,7 @@ export default function NewsPatanPage() {
         setSelectedLocation('');
         setSelectedOffender('');
     } catch (error) {
-        console.error("Error adding document: ", error);
+        console.error("Submission Error: ", error);
         toast({
             variant: 'destructive',
             title: "একটি ত্রুটি ঘটেছে",
@@ -100,11 +107,13 @@ export default function NewsPatanPage() {
               </Alert>
 
               <form onSubmit={handleSubmit} className="space-y-4">
-                 <ReCAPTCHA
-                    ref={recaptchaRef}
-                    size="invisible"
-                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
-                  />
+                 {isClient && (
+                    <ReCAPTCHA
+                        ref={recaptchaRef}
+                        size="invisible"
+                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+                    />
+                 )}
                 <div className="space-y-2">
                   <Label htmlFor="title">শিরোনাম</Label>
                   <Input name="title" id="title" placeholder="আপনার খবরের শিরোনাম লিখুন" required />
@@ -178,18 +187,6 @@ export default function NewsPatanPage() {
                 <div className="space-y-2">
                   <Label htmlFor="email">আপনার ইমেইল (ঐচ্ছিক)</Label>
                   <Input name="email" id="email" type="email" placeholder="আপনার ইমেইল" />
-                </div>
-                
-                 <div className="my-4">
-                    <ReCAPTCHA
-                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
-                        onChange={(token) => {
-                            if (recaptchaRef.current) {
-                                // We are using invisible recaptcha, so onChange is not the primary way to get the token.
-                                // But if it changes, we can update the ref.
-                            }
-                        }}
-                    />
                 </div>
 
                 <Button type="submit" size="lg" disabled={isSubmitting}>
