@@ -11,20 +11,50 @@ import { Info } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useFirestore } from '@/firebase/provider';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 
 export default function NewsPatanPage() {
   const { toast } = useToast();
   const [selectedCategory, setSelectedCategory] = useState('');
   const categories = ['খুন', 'ধর্ষণ', 'চাঁদাবাজি', 'হামলা / সংঘর্ষ', 'লুটপাট', 'দখল', 'ইসলামবিদ্বেষ', 'মাদক', 'সন্ত্রাস', 'দুর্নীতি', 'সাইবার অপরাধ', 'নারী নির্যাতন', 'অন্যান্য'];
+  const firestore = useFirestore();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    toast({
-      title: "আপনার তথ্য গৃহীত হয়েছে",
-      description: "আপনার পাঠানো তথ্য যাচাই করে প্রকাশ করা হবে। ধন্যবাদ।",
-    });
-    (e.target as HTMLFormElement).reset();
-    setSelectedCategory('');
+    if (!firestore) return;
+
+    const formData = new FormData(e.target as HTMLFormElement);
+    const submissionData: {[key: string]: any} = {
+        title: formData.get('title'),
+        newsLink: formData.get('newsLink'),
+        details: formData.get('details'),
+        name: formData.get('name') || 'নাম প্রকাশে অনিচ্ছুক',
+        email: formData.get('email'),
+        category: selectedCategory === 'অন্যান্য' ? formData.get('new-category') : selectedCategory,
+        status: 'Pending',
+        submittedAt: serverTimestamp()
+    };
+    
+    // We are not handling file uploads yet.
+    // const evidenceFile = formData.get('evidence');
+
+    try {
+        await addDoc(collection(firestore, 'submissions'), submissionData);
+        toast({
+          title: "আপনার তথ্য গৃহীত হয়েছে",
+          description: "আপনার পাঠানো তথ্য যাচাই করে প্রকাশ করা হবে। ধন্যবাদ।",
+        });
+        (e.target as HTMLFormElement).reset();
+        setSelectedCategory('');
+    } catch (error) {
+        console.error("Error adding document: ", error);
+        toast({
+            variant: 'destructive',
+            title: "একটি ত্রুটি ঘটেছে",
+            description: "আপনার তথ্য জমা দেওয়ার সময় একটি সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
+        });
+    }
   };
 
   return (
@@ -53,16 +83,16 @@ export default function NewsPatanPage() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="title">শিরোনাম</Label>
-                  <Input id="title" placeholder="আপনার খবরের শিরোনাম লিখুন" required />
+                  <Input name="title" id="title" placeholder="আপনার খবরের শিরোনাম লিখুন" required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="newsLink">মূল খবরের লিংক</Label>
-                  <Input id="newsLink" type="url" placeholder="খবরের মূল লিংক দিন" required />
+                  <Input name="newsLink" id="newsLink" type="url" placeholder="খবরের মূল লিংক দিন" required />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="category">ক্যাটাগরি</Label>
-                    <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                    <Select value={selectedCategory} onValueChange={setSelectedCategory} required>
                       <SelectTrigger id="category">
                         <SelectValue placeholder="ক্যাটাগরি নির্বাচন করুন" />
                       </SelectTrigger>
@@ -74,26 +104,26 @@ export default function NewsPatanPage() {
                   {selectedCategory === 'অন্যান্য' && (
                     <div className="space-y-2">
                       <Label htmlFor="new-category">নতুন ক্যাটাগরি যোগ করুন</Label>
-                      <Input id="new-category" placeholder="নতুন ক্যাটাগরি লিখুন" />
+                      <Input name="new-category" id="new-category" placeholder="নতুন ক্যাটাগরি লিখুন" />
                     </div>
                   )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="details">বিস্তারিত (ঐচ্ছিক)</Label>
-                  <Textarea id="details" placeholder="আপনার খবরটি বিস্তারিত লিখুন" rows={6} />
+                  <Textarea name="details" id="details" placeholder="আপনার খবরটি বিস্তারিত লিখুন" rows={6} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="evidence">প্রমাণ (ছবি/ডকুমেন্ট) (ঐচ্ছিক)</Label>
-                  <Input id="evidence" type="file" />
+                  <Input name="evidence" id="evidence" type="file" />
                   <p className="text-sm text-muted-foreground">আপনি ছবি, ভিডিও অথবা পিডিএফ ফাইল আপলোড করতে পারেন।</p>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="name">আপনার নাম (ঐচ্ছিক)</Label>
-                  <Input id="name" placeholder="আপনার নাম" />
+                  <Input name="name" id="name" placeholder="আপনার নাম" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">আপনার ইমেইল (ঐচ্ছিক)</Label>
-                  <Input id="email" type="email" placeholder="আপনার ইমেইল" />
+                  <Input name="email" id="email" type="email" placeholder="আপনার ইমেইল" />
                 </div>
                 <Button type="submit" size="lg">জমা দিন</Button>
               </form>
