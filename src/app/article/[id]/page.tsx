@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Article } from '@/lib/data';
 import { Header } from '@/components/header';
 import { Badge } from '@/components/ui/badge';
-import { CalendarDays, MapPin, User, Newspaper, Link as LinkIcon } from 'lucide-react';
+import { CalendarDays, MapPin, User, Newspaper, Link as LinkIcon, ExternalLink } from 'lucide-react';
 import { format } from 'date-fns';
 import { ArticleSummary } from '@/components/article-summary';
 import { Separator } from '@/components/ui/separator';
@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { useFirestore } from '@/firebase/provider';
 import { doc, getDoc } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
 
 async function getArticle(firestore: any, id: string): Promise<Article | null> {
   const docRef = doc(firestore, 'articles', id);
@@ -130,6 +131,17 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
               paragraph.trim() && <p key={index}>{paragraph.trim()}</p>
             ))}
           </div>
+
+          {article.newsLink && (
+            <div className="my-8 flex justify-center">
+                <Button asChild size="lg">
+                    <a href={article.newsLink} target="_blank" rel="noopener noreferrer">
+                        <ExternalLink className="mr-2 h-5 w-5" />
+                        মূল সূত্র দেখুন
+                    </a>
+                </Button>
+            </div>
+          )}
         </article>
       </main>
     </div>
