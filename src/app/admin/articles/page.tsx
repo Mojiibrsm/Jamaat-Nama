@@ -12,11 +12,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { deleteDoc, doc } from "firebase/firestore";
 import { useFirestore } from "@/firebase/provider";
 import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 export default function AdminArticlesPage() {
   const { articles, loading, error } = useArticles();
   const firestore = useFirestore();
   const { toast } = useToast();
+  const router = useRouter();
 
   const handleDelete = async (id: string) => {
     if (!firestore) return;
@@ -36,6 +38,10 @@ export default function AdminArticlesPage() {
       });
     }
   };
+
+  const handleEdit = (id: string) => {
+    router.push(`/admin/articles/edit/${id}`);
+  }
 
 
   return (
@@ -132,7 +138,7 @@ export default function AdminArticlesPage() {
                         <DropdownMenuItem asChild>
                           <Link href={`/article/${article.id}`} target="_blank">দেখুন</Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>সম্পাদনা করুন</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEdit(article.id)}>সম্পাদনা করুন</DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleDelete(article.id)}>মুছে ফেলুন</DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
