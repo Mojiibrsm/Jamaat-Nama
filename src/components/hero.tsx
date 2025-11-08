@@ -16,16 +16,16 @@ export function Hero() {
             বিএনপি ও এর অঙ্গসংগঠনের অপরাধমূলক কর্মকাণ্ডের প্রমাণভিত্তিক আর্কাইভ
           </p>
           <div className="mt-4 w-full max-w-2xl animate-fade-in-up animation-delay-700">
-            <div className="flex flex-col sm:flex-row gap-2">
+            <div className="flex flex-col sm:flex-row gap-2 p-2 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
               <div className="relative flex-grow">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white/70" />
                 <Input
                   placeholder="সার্চ..."
-                  className="pl-10 text-base h-12 bg-white/90 text-foreground"
+                  className="pl-10 text-base h-12 bg-transparent text-white border-none focus-visible:ring-0 placeholder:text-white/70"
                 />
               </div>
               <Select>
-                <SelectTrigger className="w-full sm:w-[200px] h-12 text-base bg-white/90 text-foreground">
+                <SelectTrigger className="w-full sm:w-[200px] h-12 text-base bg-transparent text-white border-0 border-l sm:border-l-white/20 rounded-none">
                   <SelectValue placeholder="অপরাধ ক্যাটাগরি" />
                 </SelectTrigger>
                 <SelectContent>
