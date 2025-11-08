@@ -15,17 +15,26 @@ export function Header() {
   return (
     <header className="bg-primary text-primary-foreground sticky top-0 z-40 w-full">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
-        <Link href="/" className="text-2xl font-headline font-bold">
-          Jamaat Nama
-        </Link>
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-            {navLinks.map((link) => (
+        <nav className="hidden md:flex items-center gap-6 text-sm font-medium w-1/3">
+            {navLinks.slice(0, 2).map((link) => (
                 <Link key={link.href} href={link.href} className="text-primary-foreground/80 transition-colors hover:text-primary-foreground">
                     {link.label}
                 </Link>
             ))}
         </nav>
-        <div className="md:hidden">
+        <div className="flex justify-center w-1/3">
+            <Link href="/" className="text-2xl font-headline font-bold">
+              Jamaat Nama
+            </Link>
+        </div>
+        <nav className="hidden md:flex items-center justify-end gap-6 text-sm font-medium w-1/3">
+            {navLinks.slice(2).map((link) => (
+                <Link key={link.href} href={link.href} className="text-primary-foreground/80 transition-colors hover:text-primary-foreground">
+                    {link.label}
+                </Link>
+            ))}
+        </nav>
+        <div className="md:hidden flex justify-end w-1/3">
             <Sheet>
                 <SheetTrigger asChild>
                     <Button variant="ghost" size="icon" className="hover:bg-primary/80">
