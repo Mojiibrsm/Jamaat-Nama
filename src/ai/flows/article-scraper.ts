@@ -36,20 +36,16 @@ const scrapeArticleFlow = ai.defineFlow(
     outputSchema: ScrapeArticleOutputSchema,
   },
   async (input) => {
-    // First, fetch the content from the URL. This is more reliable.
-    const response = await fetch(input.articleUrl);
-    const articleContent = await response.text();
-
     // Now, pass the fetched content to the model for extraction.
     const { output } = await ai.generate({
       prompt: `
-        You are an expert news article scraper. Your task is to extract key information from the provided article HTML content.
+        You are an expert news article scraper. Your task is to extract key information from the provided article URL.
         Please extract the title, the full body content (extract only the main article text, clean of ads, navigation, and other boilerplate), the publication date (in ISO format), 
         the most relevant category, the location of the event, and the name of the news source.
         
-        Article Content:
+        Article URL:
         ---
-        ${articleContent}
+        ${input.articleUrl}
         ---
 
         Provide only the structured data as your output.
