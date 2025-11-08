@@ -14,7 +14,7 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 
 const { firestore } = initializeFirebase();
 
-export const SubmitNewsInputSchema = z.object({
+const SubmitNewsInputSchema = z.object({
   title: z.string(),
   newsLink: z.string().url(),
   details: z.string().optional(),
@@ -27,7 +27,7 @@ export const SubmitNewsInputSchema = z.object({
 });
 export type SubmitNewsInput = z.infer<typeof SubmitNewsInputSchema>;
 
-export const SubmitNewsOutputSchema = z.object({
+const SubmitNewsOutputSchema = z.object({
   success: z.boolean(),
   message: z.string(),
   submissionId: z.string().optional(),
@@ -51,6 +51,9 @@ const submitNewsFlow = ai.defineFlow(
 
     // 1. Verify reCAPTCHA token
     const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+    if (!secretKey) {
+        throw new Error('reCAPTCHA secret key is not set.');
+    }
     const verificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaToken}`;
     
     try {
