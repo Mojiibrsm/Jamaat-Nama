@@ -6,9 +6,13 @@ import type { Article } from '@/lib/data';
 
 const categories = ['সব', 'খুন', 'ধর্ষণ', 'চাঁদাবাজি', 'হামলা', 'লুটপাট', 'দখল', 'ইসলামবিদ্বেষ', 'মাদক'];
 
-export function NewsFeed({ articles }: { articles: Article[] }) {
+interface NewsFeedProps {
+  articles: Article[];
+  searchTerm: string;
+}
+
+export function NewsFeed({ articles, searchTerm }: NewsFeedProps) {
   const [selectedCategory, setSelectedCategory] = useState('সব');
-  const [searchTerm, setSearchTerm] = useState('');
 
   const filteredArticles = useMemo(() => {
     // A temp solution to map categories for filtering
