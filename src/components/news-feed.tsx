@@ -4,46 +4,51 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArticleCard } from '@/components/article-card';
 import type { Article } from '@/lib/data';
 
-const categories = ['সব', 'খুন', 'ধর্ষণ', 'চাঁদাবাজি', 'হামলা', 'লুটপাট', 'দখল', 'ইসলামবিদ্বেষ', 'মাদক'];
-
 interface NewsFeedProps {
   articles: Article[];
   searchTerm: string;
+  categoryFilter: string;
+  locationFilter: string;
+  offenderFilter: string;
 }
 
-export function NewsFeed({ articles, searchTerm }: NewsFeedProps) {
-  const [selectedCategory, setSelectedCategory] = useState('সব');
+export function NewsFeed({ articles, searchTerm, categoryFilter, locationFilter, offenderFilter }: NewsFeedProps) {
+  const [selectedTab, setSelectedTab] = useState('সব');
 
   const filteredArticles = useMemo(() => {
-    // A temp solution to map categories for filtering
-    const tempCategoryMap: { [key: string]: string } = {
-      'হামলা': 'হামলা / সংঘর্ষ',
-    };
-    
     return articles.filter(article => {
-      const articleCategory = article.category;
-      const selected = tempCategoryMap[selectedCategory] || selectedCategory;
+      const matchesSearch = searchTerm === '' || 
+        article.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        article.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        article.location.toLowerCase().includes(searchTerm.toLowerCase());
+        
+      const matchesTabCategory = selectedTab === 'সব' || article.category === selectedTab;
+      
+      const matchesDropdownCategory = categoryFilter === 'সব' || article.category === categoryFilter;
 
-      const matchesCategory = selected === 'সব' || articleCategory === selected;
-      const matchesSearch = searchTerm === '' || article.title.toLowerCase().includes(searchTerm.toLowerCase()) || article.content.toLowerCase().includes(searchTerm.toLowerCase());
-      return matchesCategory && matchesSearch;
+      const matchesLocation = locationFilter === 'সব' || article.location === locationFilter;
+      
+      const matchesOffender = offenderFilter === 'সব' || article.offender.includes(offenderFilter);
+
+      return matchesSearch && matchesTabCategory && matchesDropdownCategory && matchesLocation && matchesOffender;
     });
-  }, [articles, selectedCategory, searchTerm]);
+  }, [articles, searchTerm, selectedTab, categoryFilter, locationFilter, offenderFilter]);
 
-  // A temp solution to map categories for display
   const displayCategories = useMemo(() => {
     const allCategories = ['সব', ...new Set(articles.map(a => a.category))];
      const categoryDisplayMap: { [key: string]: string } = {
       'হামলা / সংঘর্ষ': 'হামলা',
     };
-    return allCategories.map(c => categoryDisplayMap[c] || c);
+    // This is a temporary fix, ideally the data should be consistent
+    const uniqueCategories = [...new Set(allCategories.map(c => categoryDisplayMap[c] || c))];
+    return uniqueCategories;
   }, [articles]);
 
 
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 animate-fade-in-up">
       <div className="mb-8 space-y-6">
-        <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="w-full flex justify-center">
+        <Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full flex justify-center">
           <TabsList className="overflow-x-auto">
             {displayCategories.map(category => (
               <TabsTrigger key={category} value={category}>
