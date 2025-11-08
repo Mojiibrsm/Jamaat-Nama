@@ -31,6 +31,7 @@ import { districts } from "@/lib/districts";
 
 const formSchema = z.object({
   title: z.string().min(10, { message: "শিরোনাম কমপক্ষে ১০ অক্ষরের হতে হবে।" }),
+  slug: z.string().min(3, { message: "Slug কমপক্ষে ৩ অক্ষরের হতে হবে।" }),
   category: z.string().min(1, { message: "ক্যাটাগরি নির্বাচন করুন।" }),
   content: z.string().min(50, { message: "বিবরণ কমপক্ষে ৫০ অক্ষরের হতে হবে।" }),
   publicationDate: z.string().optional(),
@@ -66,9 +67,11 @@ export function ArticleForm({ initialData }: ArticleFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isOtherOffender = !offenders.includes(initialData?.offender || '');
+  const [isSlugManuallyChanged, setIsSlugManuallyChanged] = useState(false);
 
   const defaultValues: Partial<ArticleFormValues> = {
       title: initialData?.title || "",
+      slug: initialData?.slug || "",
       category: initialData?.category || "",
       content: initialData?.content || "",
       publicationDate: initialData?.publicationDate || new Date().toISOString(),
@@ -86,12 +89,26 @@ export function ArticleForm({ initialData }: ArticleFormProps) {
     defaultValues,
   });
 
+  const watchedTitle = useWatch({ control: form.control, name: 'title' });
   const watchedOffender = useWatch({ control: form.control, name: 'offender' });
+  
+  useEffect(() => {
+    if (initialData?.slug) {
+        setIsSlugManuallyChanged(true);
+    }
+  }, [initialData?.slug]);
+  
+  useEffect(() => {
+    if (watchedTitle && !isSlugManuallyChanged) {
+        form.setValue('slug', slugify(watchedTitle));
+    }
+  }, [watchedTitle, form, isSlugManuallyChanged]);
 
   useEffect(() => {
     if (initialData) {
         const isOther = !offenders.includes(initialData.offender || '');
         form.reset({
+            ...defaultValues,
             ...initialData,
             publicationDate: initialData.publicationDate || new Date().toISOString(),
             offender: isOther ? 'অন্যান্য' : initialData.offender,
@@ -104,13 +121,11 @@ export function ArticleForm({ initialData }: ArticleFormProps) {
     if (!firestore) return;
     setIsSubmitting(true);
     
-    const finalData: Partial<Article> = { ...data };
+    const finalData: Partial<Article> & { slug: string } = { ...data, slug: data.slug || slugify(data.title)};
     if (data.offender === 'অন্যান্য') {
         finalData.offender = data.offender_other || 'অন্যান্য';
     }
     delete (finalData as any).offender_other;
-
-    finalData.slug = slugify(data.title);
 
     try {
       const docRef = initialData?.id ? doc(firestore, 'articles', initialData.id) : doc(collection(firestore, "articles"));
@@ -151,6 +166,30 @@ export function ArticleForm({ initialData }: ArticleFormProps) {
               <FormControl>
                 <Input placeholder="সংবাদের শিরোনাম" {...field} />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="slug"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Slug</FormLabel>
+              <FormControl>
+                <Input 
+                  placeholder="সংবাদের slug" 
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    setIsSlugManuallyChanged(true);
+                  }}
+                 />
+              </FormControl>
+               <FormDescription>
+                এটি URL-এর জন্য ব্যবহৃত হবে। শিরোনাম থেকে স্বয়ংক্রিয়ভাবে তৈরি হবে, তবে আপনি চাইলে পরিবর্তন করতে পারেন।
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -363,3 +402,5 @@ export function ArticleForm({ initialData }: ArticleFormProps) {
     </Form>
   );
 }
+
+    
