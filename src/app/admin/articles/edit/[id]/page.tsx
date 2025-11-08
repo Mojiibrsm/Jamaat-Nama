@@ -19,14 +19,15 @@ async function getArticle(firestore: any, id: string): Promise<Article | null> {
 }
 
 export default function EditArticlePage({ params }: { params: { id: string } }) {
+  const { id } = params;
   const firestore = useFirestore();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!firestore || !params.id) return;
+    if (!firestore || !id) return;
     
-    getArticle(firestore, params.id).then(articleData => {
+    getArticle(firestore, id).then(articleData => {
       if (articleData) {
         setArticle(articleData);
       } else {
@@ -34,7 +35,7 @@ export default function EditArticlePage({ params }: { params: { id: string } }) 
       }
       setLoading(false);
     });
-  }, [firestore, params.id]);
+  }, [firestore, id]);
 
   if (loading) {
     return (
