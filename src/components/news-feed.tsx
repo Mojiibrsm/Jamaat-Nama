@@ -1,11 +1,8 @@
 'use client';
 import React, { useState, useMemo } from 'react';
-import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArticleCard } from '@/components/article-card';
 import type { Article } from '@/lib/data';
-import { Search } from 'lucide-react';
-import { Card, CardContent } from './ui/card';
 
 const categories = ['সব', 'খুন', 'ধর্ষণ', 'চাঁদাবাজি', 'হামলা', 'লুটপাট', 'দখল', 'ইসলামবিদ্বেষ', 'মাদক'];
 
@@ -24,7 +21,7 @@ export function NewsFeed({ articles }: { articles: Article[] }) {
       const selected = tempCategoryMap[selectedCategory] || selectedCategory;
 
       const matchesCategory = selected === 'সব' || articleCategory === selected;
-      const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) || article.content.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch = searchTerm === '' || article.title.toLowerCase().includes(searchTerm.toLowerCase()) || article.content.toLowerCase().includes(searchTerm.toLowerCase());
       return matchesCategory && matchesSearch;
     });
   }, [articles, selectedCategory, searchTerm]);
@@ -42,16 +39,6 @@ export function NewsFeed({ articles }: { articles: Article[] }) {
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 animate-fade-in-up">
       <div className="mb-8 space-y-6">
-        <div className="relative w-full max-w-xl mx-auto">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-          <Input 
-            placeholder="আপনার পছন্দের খবর খুঁজুন..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 h-14 rounded-full bg-background/80 backdrop-blur-sm border-2 border-border focus:border-primary shadow-lg"
-            aria-label="Search articles"
-          />
-        </div>
         <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="w-full flex justify-center">
           <TabsList className="overflow-x-auto">
             {displayCategories.map(category => (
