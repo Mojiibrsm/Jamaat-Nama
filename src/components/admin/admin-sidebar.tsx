@@ -11,7 +11,6 @@ const navItems = [
   { href: '/admin', icon: Home, label: 'ড্যাশবোর্ড' },
   { href: '/admin/articles', icon: Newspaper, label: 'সংবাদ পরিচালনা' },
   { href: '/admin/submissions', icon: FileText, label: 'জমা পড়া খবর' },
-  { href: '/admin/settings', icon: Settings, label: 'সেটিংস' },
 ];
 
 export function AdminSidebar() {
@@ -35,7 +34,8 @@ export function AdminSidebar() {
                   href={item.href}
                   className={cn(
                     'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8',
-                    pathname === item.href && 'bg-accent text-accent-foreground'
+                    pathname.startsWith(item.href) && item.href !== '/admin' && 'bg-accent text-accent-foreground',
+                    pathname === '/admin' && item.href === '/admin' && 'bg-accent text-accent-foreground'
                   )}
                 >
                   <item.icon className="h-5 w-5" />
@@ -51,7 +51,10 @@ export function AdminSidebar() {
                 <TooltipTrigger asChild>
                     <Link
                         href="/admin/settings"
-                        className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                        className={cn(
+                          "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                          pathname.startsWith('/admin/settings') && "bg-accent text-accent-foreground"
+                        )}
                     >
                         <Settings className="h-5 w-5" />
                         <span className="sr-only">Settings</span>
