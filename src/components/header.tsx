@@ -16,7 +16,8 @@ const navLinks = [
 export function Header() {
   return (
     <header className="bg-primary text-primary-foreground sticky top-0 z-40 w-full">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
+      <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
+        {/* Desktop Navigation Left */}
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium w-1/3">
             {navLinks.slice(0, 2).map((link) => (
                 <Link key={link.href} href={link.href} className="text-primary-foreground/80 transition-colors hover:text-primary-foreground">
@@ -24,17 +25,24 @@ export function Header() {
                 </Link>
             ))}
         </nav>
-        <div className="flex-1 md:flex-none flex justify-center md:w-1/3">
+        
+        {/* Mobile Spacer - to help center the logo */}
+        <div className="w-10 md:hidden"></div>
+
+        {/* Logo */}
+        <div className="flex justify-center flex-1 md:flex-none md:w-1/3">
             <Link href="/">
               <Image 
                 src="https://ik.imagekit.io/uekohag7w/%E0%A6%9C%E0%A6%BE%E0%A6%AE%E0%A6%BE%E0%A7%9F%E0%A6%BE%E0%A6%A4%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A6%BE_20251108_185925_0000.png"
                 alt="Jamaat Nama Logo"
-                width={150}
-                height={40}
+                width={180}
+                height={48}
                 className="object-contain"
               />
             </Link>
         </div>
+
+        {/* Desktop Navigation Right */}
         <nav className="hidden md:flex items-center justify-end gap-6 text-sm font-medium w-1/3">
             {navLinks.slice(2).map((link) => (
                 <Link key={link.href} href={link.href} className="text-primary-foreground/80 transition-colors hover:text-primary-foreground">
@@ -42,6 +50,8 @@ export function Header() {
                 </Link>
             ))}
         </nav>
+
+        {/* Mobile Navigation */}
         <div className="md:hidden">
             <Sheet>
                 <SheetTrigger asChild>
@@ -56,8 +66,8 @@ export function Header() {
                             <Image 
                                 src="https://ik.imagekit.io/uekohag7w/%E0%A6%9C%E0%A6%BE%E0%A6%AE%E0%A6%BE%E0%A7%9F%E0%A6%BE%E0%A6%A4%20%E0%A6%A8%E0%A6%BE%E0%A6%AE%E0%A6%BE_20251108_185925_0000.png"
                                 alt="Jamaat Nama Logo"
-                                width={150}
-                                height={40}
+                                width={180}
+                                height={48}
                                 className="object-contain"
                             />
                         </Link>
