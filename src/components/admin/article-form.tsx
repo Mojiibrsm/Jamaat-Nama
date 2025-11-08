@@ -24,17 +24,18 @@ import { useEffect, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "../ui/calendar";
+import { districts } from "@/lib/districts";
 
 const formSchema = z.object({
   title: z.string().min(10, { message: "শিরোনাম কমপক্ষে ১০ অক্ষরের হতে হবে।" }),
   category: z.string().min(1, { message: "ক্যাটাগরি নির্বাচন করুন।" }),
   content: z.string().min(50, { message: "বিবরণ কমপক্ষে ৫০ অক্ষরের হতে হবে।" }),
   publicationDate: z.string().optional(),
-  location: z.string().min(2, { message: "স্থান উল্লেখ করুন।" }),
-  offender: z.string().min(2, { message: "অভিযুক্তের নাম উল্লেখ করুন।" }),
+  location: z.string().min(1, { message: "স্থান উল্লেখ করুন।" }),
+  offender: z.string().min(1, { message: "অভিযুক্তের নাম উল্লেখ করুন।" }),
   newsSource: z.string().min(3, { message: "সংবাদের উৎস উল্লেখ করুন।" }),
   newsLink: z.string().url({ message: "অনুগ্রহ করে একটি বৈধ লিংক দিন।" }),
   imageUrl: z.string().url({ message: "অনুগ্রহ করে একটি বৈধ ছবির লিংক দিন।" }).optional().or(z.literal('')),
@@ -44,6 +45,7 @@ const formSchema = z.object({
 type ArticleFormValues = z.infer<typeof formSchema>;
 
 const categories = ['খুন', 'ধর্ষণ', 'চাঁদাবাজি', 'হামলা / সংঘর্ষ', 'লুটপাট', 'দখল', 'ইসলামবিদ্বেষ', 'মাদক', 'সন্ত্রাস', 'দুর্নীতি', 'সাইবার অপরাধ', 'নারী নির্যাতন', 'অন্যান্য'];
+const offenders = ['জামায়াত', 'শিবির', 'অন্যান্য'];
 
 interface ArticleFormProps {
   initialData?: Partial<Article> | null;
@@ -75,7 +77,10 @@ export function ArticleForm({ initialData }: ArticleFormProps) {
 
   useEffect(() => {
     if (initialData) {
-      form.reset(initialData);
+      form.reset({
+        ...initialData,
+        publicationDate: initialData.publicationDate || new Date().toISOString(),
+      });
     }
   }, [initialData, form]);
 
@@ -91,6 +96,7 @@ export function ArticleForm({ initialData }: ArticleFormProps) {
         description: `সংবাদটি সফলভাবে ${initialData?.id ? 'হালনাগাদ' : 'তৈরি'} করা হয়েছে।`,
       });
       router.push('/admin/articles');
+      router.refresh();
     } catch (e) {
       console.error("Error adding/updating document: ", e);
       toast({
@@ -205,9 +211,16 @@ export function ArticleForm({ initialData }: ArticleFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>স্থান</FormLabel>
-                  <FormControl>
-                    <Input placeholder="ঘটনার স্থান" {...field} />
-                  </FormControl>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="একটি জেলা নির্বাচন করুন" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {districts.map(dis => <SelectItem key={dis} value={dis}>{dis}</SelectItem>)}
+                        </SelectContent>
+                    </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -218,9 +231,16 @@ export function ArticleForm({ initialData }: ArticleFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>অভিযুক্ত</FormLabel>
-                  <FormControl>
-                    <Input placeholder="অভিযুক্ত ব্যক্তি বা সংস্থার নাম" {...field} />
-                  </FormControl>
+                   <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="অভিযুক্ত নির্বাচন করুন" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {offenders.map(off => <SelectItem key={off} value={off}>{off}</SelectItem>)}
+                        </SelectContent>
+                    </Select>
                   <FormMessage />
                 </FormItem>
               )}

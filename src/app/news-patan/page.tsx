@@ -13,11 +13,16 @@ import { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useFirestore } from '@/firebase/provider';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { districts } from '@/lib/districts';
 
 export default function NewsPatanPage() {
   const { toast } = useToast();
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState('');
+  const [selectedOffender, setSelectedOffender] = useState('');
+
   const categories = ['খুন', 'ধর্ষণ', 'চাঁদাবাজি', 'হামলা / সংঘর্ষ', 'লুটপাট', 'দখল', 'ইসলামবিদ্বেষ', 'মাদক', 'সন্ত্রাস', 'দুর্নীতি', 'সাইবার অপরাধ', 'নারী নির্যাতন', 'অন্যান্য'];
+  const offenders = ['জামায়াত', 'শিবির', 'অন্যান্য'];
   const firestore = useFirestore();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -32,6 +37,8 @@ export default function NewsPatanPage() {
         name: formData.get('name') || 'নাম প্রকাশে অনিচ্ছুক',
         email: formData.get('email'),
         category: selectedCategory === 'অন্যান্য' ? formData.get('new-category') : selectedCategory,
+        location: selectedLocation,
+        offender: selectedOffender,
         status: 'Pending',
         submittedAt: serverTimestamp()
     };
@@ -47,6 +54,8 @@ export default function NewsPatanPage() {
         });
         (e.target as HTMLFormElement).reset();
         setSelectedCategory('');
+        setSelectedLocation('');
+        setSelectedOffender('');
     } catch (error) {
         console.error("Error adding document: ", error);
         toast({
@@ -107,6 +116,30 @@ export default function NewsPatanPage() {
                       <Input name="new-category" id="new-category" placeholder="নতুন ক্যাটাগরি লিখুন" />
                     </div>
                   )}
+                </div>
+                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="location">স্থান</Label>
+                      <Select value={selectedLocation} onValueChange={setSelectedLocation} required>
+                        <SelectTrigger id="location">
+                          <SelectValue placeholder="জেলা নির্বাচন করুন" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {districts.map(dis => <SelectItem key={dis} value={dis}>{dis}</SelectItem>)}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="offender">অভিযুক্ত</Label>
+                      <Select value={selectedOffender} onValueChange={setSelectedOffender} required>
+                        <SelectTrigger id="offender">
+                          <SelectValue placeholder="অভিযুক্ত নির্বাচন করুন" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {offenders.map(off => <SelectItem key={off} value={off}>{off}</SelectItem>)}
+                        </SelectContent>
+                      </Select>
+                    </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="details">বিস্তারিত (ঐচ্ছিক)</Label>
