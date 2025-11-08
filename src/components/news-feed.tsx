@@ -41,31 +41,27 @@ export function NewsFeed({ articles }: { articles: Article[] }) {
 
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 animate-fade-in-up">
-      <Card className="mb-8 shadow-lg">
-        <CardContent className="p-4">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="relative w-full md:max-w-sm">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input 
-                placeholder="খবর খুঁজুন..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 h-12"
-                aria-label="Search articles"
-              />
-            </div>
-            <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="w-full md:w-auto overflow-x-auto">
-              <TabsList>
-                {displayCategories.map(category => (
-                  <TabsTrigger key={category} value={category}>
-                    {category}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </Tabs>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="mb-8 space-y-6">
+        <div className="relative w-full max-w-xl mx-auto">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <Input 
+            placeholder="আপনার পছন্দের খবর খুঁজুন..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-12 pr-4 py-3 h-14 rounded-full bg-background/80 backdrop-blur-sm border-2 border-border focus:border-primary shadow-lg"
+            aria-label="Search articles"
+          />
+        </div>
+        <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="w-full flex justify-center">
+          <TabsList className="overflow-x-auto">
+            {displayCategories.map(category => (
+              <TabsTrigger key={category} value={category}>
+                {category}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+      </div>
       
       {filteredArticles.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
