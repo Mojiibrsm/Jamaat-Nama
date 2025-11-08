@@ -16,17 +16,18 @@ async function getArticle(id: string): Promise<Article | undefined> {
 }
 
 export default function ArticlePage({ params }: { params: { id: string } }) {
+  const { id } = params;
   const [article, setArticle] = useState<Article | null | undefined>(undefined);
   const [formattedDate, setFormattedDate] = useState('');
 
   useEffect(() => {
-    getArticle(params.id).then(fetchedArticle => {
+    getArticle(id).then(fetchedArticle => {
       setArticle(fetchedArticle);
       if (fetchedArticle) {
         setFormattedDate(format(new Date(fetchedArticle.publicationDate), 'MMMM d, yyyy'));
       }
     });
-  }, [params.id]);
+  }, [id]);
 
   if (article === undefined) {
     // Loading state
