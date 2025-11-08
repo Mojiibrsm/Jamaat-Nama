@@ -1,6 +1,6 @@
 
 'use client';
-import { notFound } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Article } from '@/lib/data';
 import { Header } from '@/components/header';
@@ -16,6 +16,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import Link from 'next/link';
 
 
 async function getArticle(firestore: any, id: string): Promise<Article | null> {
@@ -27,13 +28,15 @@ async function getArticle(firestore: any, id: string): Promise<Article | null> {
   return null;
 }
 
-export default function ArticlePage({ params }: { params: { id:string } }) {
+export default function ArticlePage({ params }: { params: { id: string } }) {
   const { id } = params;
   const firestore = useFirestore();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
   const [isShareSupported, setIsShareSupported] = useState(false);
+  const router = useRouter();
+
 
   useEffect(() => {
     if (typeof navigator !== 'undefined' && navigator.share) {
@@ -61,10 +64,6 @@ export default function ArticlePage({ params }: { params: { id:string } }) {
         console.error('Error sharing:', error);
       }
     }
-  };
-
-  const handlePrint = () => {
-    window.print();
   };
 
 
@@ -183,7 +182,7 @@ export default function ArticlePage({ params }: { params: { id:string } }) {
                       </Button>
                   </div>
               )}
-              <div className="flex flex-wrap justify-center gap-4">
+              <div className="flex flex-wrap justify-center gap-4 mt-4">
                   <TooltipProvider>
                       {isShareSupported && (
                           <Tooltip>
@@ -211,10 +210,12 @@ export default function ArticlePage({ params }: { params: { id:string } }) {
                       </Tooltip>
                       <Tooltip>
                           <TooltipTrigger asChild>
-                              <Button onClick={handlePrint} variant="outline" size="icon">
-                                  <Printer className="h-5 w-5" />
-                                  <span className="sr-only">প্রিন্ট করুন</span>
-                              </Button>
+                            <Button asChild variant="outline" size="icon">
+                                <Link href={`/article/${id}/print`} target="_blank">
+                                    <Printer className="h-5 w-5" />
+                                    <span className="sr-only">প্রিন্ট করুন</span>
+                                </Link>
+                            </Button>
                           </TooltipTrigger>
                           <TooltipContent>
                               <p>প্রিন্ট করুন</p>
