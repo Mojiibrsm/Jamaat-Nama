@@ -10,12 +10,12 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 
-export const ScrapeArticleInputSchema = z.object({
+const ScrapeArticleInputSchema = z.object({
   articleUrl: z.string().url().describe('The URL of the news article to scrape.'),
 });
 export type ScrapeArticleInput = z.infer<typeof ScrapeArticleInputSchema>;
 
-export const ScrapeArticleOutputSchema = z.object({
+const ScrapeArticleOutputSchema = z.object({
   title: z.string().describe('The main title of the article.'),
   content: z.string().describe('The full body content of the article, cleaned of ads and navigation elements.'),
   publicationDate: z.string().describe('The publication date of the article in ISO 8601 format.').optional(),
