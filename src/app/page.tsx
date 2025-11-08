@@ -1,5 +1,6 @@
 import { Header } from "@/components/header";
 import { Hero } from "@/components/hero";
+import { CrimeCategoryGrid } from "@/components/crime-category-grid";
 import { NewsFeed } from "@/components/news-feed";
 import { articles } from "@/lib/data";
 
@@ -9,6 +10,7 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         <Hero />
+        <CrimeCategoryGrid />
         <NewsFeed articles={articles} />
       </main>
     </div>
