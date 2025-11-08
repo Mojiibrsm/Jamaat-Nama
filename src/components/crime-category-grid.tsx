@@ -13,7 +13,7 @@ const categories = [
 ];
 
 const CategoryCard = ({ name, count, Icon }: { name: string; count: string; Icon: React.ElementType }) => (
-  <Card className="flex flex-col items-center justify-center p-6 bg-muted/20 hover:bg-muted/50 transition-all duration-300 transform hover:-translate-y-2 motion-safe:hover:scale-105 text-center shadow-sm">
+  <Card className="flex flex-col items-center justify-center p-6 bg-card hover:bg-muted/50 transition-all duration-300 transform hover:-translate-y-2 motion-safe:hover:scale-105 text-center shadow-md border-border/80 hover:border-primary/50">
     <Icon className="w-12 h-12 text-primary mb-3" />
     <p className="text-3xl font-bold text-foreground">{count}</p>
     <p className="text-md font-medium text-muted-foreground mt-1">{name}</p>
