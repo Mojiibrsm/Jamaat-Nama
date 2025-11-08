@@ -3,6 +3,7 @@
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search } from 'lucide-react';
+import { Button } from './ui/button';
 
 export interface SearchSectionProps {
   searchTerm: string;
@@ -16,6 +17,7 @@ export interface SearchSectionProps {
   selectedOffender: string;
   setSelectedOffender: (offender: string) => void;
   offenders: string[];
+  onSearch: (searchState: { term: string; category: string; location: string; offender: string }) => void;
 }
 
 export function SearchSection({ 
@@ -23,7 +25,24 @@ export function SearchSection({
   selectedCategory, setSelectedCategory, categories,
   selectedLocation, setSelectedLocation, locations,
   selectedOffender, setSelectedOffender, offenders,
+  onSearch,
 }: SearchSectionProps) {
+
+  const handleSearchClick = () => {
+    onSearch({
+      term: searchTerm,
+      category: selectedCategory,
+      location: selectedLocation,
+      offender: selectedOffender,
+    });
+  };
+  
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearchClick();
+    }
+  };
+
   return (
     <div className="bg-muted/50 rounded-xl p-6 md:p-8">
       <div className="w-full max-w-4xl mx-auto space-y-4">
@@ -33,11 +52,12 @@ export function SearchSection({
               placeholder="শিরোনাম, বিবরণ বা স্থান দিয়ে খবর খুঁজুন..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={handleKeyDown}
               className="w-full pl-12 pr-4 py-3 h-14 rounded-full bg-background border-2 border-border focus:border-primary shadow-lg"
               aria-label="Search articles"
             />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
               <SelectTrigger className="h-12 rounded-full bg-background shadow-lg border-2">
                 <SelectValue placeholder="ক্যাটাগরি" />
@@ -62,6 +82,10 @@ export function SearchSection({
                 {offenders.map(off => <SelectItem key={off} value={off}>{off}</SelectItem>)}
               </SelectContent>
             </Select>
+            <Button onClick={handleSearchClick} className="h-12 rounded-full shadow-lg text-base font-bold">
+              <Search className="mr-2 h-5 w-5" />
+              অনুসন্ধান
+            </Button>
           </div>
       </div>
     </div>
