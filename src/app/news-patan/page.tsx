@@ -49,12 +49,16 @@ export default function NewsPatanPage() {
                   <Label htmlFor="title">শিরোনাম</Label>
                   <Input id="title" placeholder="আপনার খবরের শিরোনাম লিখুন" required />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="details">বিস্তারিত</Label>
-                  <Textarea id="details" placeholder="আপনার খবরটি বিস্তারিত লিখুন" rows={6} required />
+                 <div className="space-y-2">
+                  <Label htmlFor="newsLink">মূল খবরের লিংক</Label>
+                  <Input id="newsLink" type="url" placeholder="খবরের মূল লিংক দিন" required />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="evidence">প্রমাণ (ছবি/ডকুমেন্ট)</Label>
+                  <Label htmlFor="details">বিস্তারিত (ঐচ্ছিক)</Label>
+                  <Textarea id="details" placeholder="আপনার খবরটি বিস্তারিত লিখুন" rows={6} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="evidence">প্রমাণ (ছবি/ডকুমেন্ট) (ঐচ্ছিক)</Label>
                   <Input id="evidence" type="file" />
                   <p className="text-sm text-muted-foreground">আপনি ছবি, ভিডিও অথবা পিডিএফ ফাইল আপলোড করতে পারেন।</p>
                 </div>
