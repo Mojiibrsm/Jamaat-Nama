@@ -1,3 +1,4 @@
+
 'use client';
 import { useState, useMemo } from 'react';
 import { Header } from "@/components/header";
@@ -5,7 +6,6 @@ import { Hero } from "@/components/hero";
 import { CrimeCategoryGrid } from "@/components/crime-category-grid";
 import { NewsFeed } from "@/components/news-feed";
 import { articles } from "@/lib/data";
-import { SearchSection } from "@/components/search-section";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');

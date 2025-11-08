@@ -1,7 +1,10 @@
+
 import { Card } from '@/components/ui/card';
 import { VenetianMask, LandPlot, Handshake, Landmark, Dna, PackageSearch, Ban, Skull } from 'lucide-react';
+import { SearchSection } from './search-section';
+import type { SearchSectionProps } from './search-section';
 
-const categories = [
+const crimeCategories = [
   { name: 'খুন', count: '175+', Icon: Skull },
   { name: 'ধর্ষণ', count: '70+', Icon: Ban },
   { name: 'চাঁদাবাজি', count: '215+', Icon: VenetianMask },
@@ -20,15 +23,18 @@ const CategoryCard = ({ name, count, Icon }: { name: string; count: string; Icon
   </Card>
 );
 
-export function CrimeCategoryGrid() {
+export function CrimeCategoryGrid(props: SearchSectionProps) {
   return (
     <section className="bg-background py-12 md:py-20 animate-fade-in-up">
       <div className="container mx-auto px-4 md:px-6">
-        <h2 className="text-3xl md:text-4xl font-headline font-bold text-center text-primary mb-10">
+        
+        <SearchSection {...props} />
+
+        <h2 className="text-3xl md:text-4xl font-headline font-bold text-center text-primary mb-10 mt-16">
           অপরাধ ক্যাটাগরি
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {categories.map((category) => (
+          {crimeCategories.map((category) => (
             <CategoryCard key={category.name} {...category} />
           ))}
         </div>
