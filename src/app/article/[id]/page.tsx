@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Article } from '@/lib/data';
 import { Header } from '@/components/header';
 import { Badge } from '@/components/ui/badge';
-import { CalendarDays, MapPin, User, Newspaper, Link as LinkIcon, ExternalLink } from 'lucide-react';
+import { CalendarDays, MapPin, User, Newspaper, Link as LinkIcon, ExternalLink, Share2, Copy } from 'lucide-react';
 import { format } from 'date-fns';
 import { ArticleSummary } from '@/components/article-summary';
 import { Separator } from '@/components/ui/separator';
@@ -14,6 +14,7 @@ import { useFirestore } from '@/firebase/provider';
 import { doc, getDoc } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 
 async function getArticle(firestore: any, id: string): Promise<Article | null> {
   const docRef = doc(firestore, 'articles', id);
@@ -24,10 +25,40 @@ async function getArticle(firestore: any, id: string): Promise<Article | null> {
   return null;
 }
 
-export default function ArticlePage({ params }: { params: { id: string } }) {
+export default function ArticlePage({ params }: { params: { id:string } }) {
   const firestore = useFirestore();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
+  const [isShareSupported, setIsShareSupported] = useState(false);
+
+  useEffect(() => {
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      setIsShareSupported(true);
+    }
+  }, []);
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    toast({
+      title: "লিংক কপি করা হয়েছে!",
+      description: "আপনি এখন এই লিংকটি শেয়ার করতে পারেন।",
+    });
+  };
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: article?.title,
+          text: `"${article?.title}" খবরটি পড়ুন Jamaat Nama-তে`,
+          url: window.location.href,
+        });
+      } catch (error) {
+        console.error('Error sharing:', error);
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -51,7 +82,8 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
         <Header />
         <main className="flex-1 py-8">
           <article className="container mx-auto px-4 md:px-6 max-w-4xl">
-            <Skeleton className="h-12 w-3/4 mb-6" />
+            <Skeleton className="h-12 w-3/4 mb-4" />
+            <Skeleton className="h-10 w-40 mb-6" />
             <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4 mb-8">
               {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-6 w-full" />)}
             </div>
@@ -88,9 +120,22 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
       <Header />
       <main className="flex-1 py-8">
         <article className="container mx-auto px-4 md:px-6 max-w-4xl">
-          <h1 className="text-3xl md:text-4xl font-headline font-bold text-primary leading-tight mb-6">
+          <h1 className="text-3xl md:text-4xl font-headline font-bold text-primary leading-tight mb-4">
             {article.title}
           </h1>
+          
+          <div className="flex items-center gap-2 mb-6">
+            {isShareSupported && (
+                <Button onClick={handleShare} variant="outline" size="sm">
+                    <Share2 className="mr-2 h-4 w-4" />
+                    শেয়ার করুন
+                </Button>
+            )}
+            <Button onClick={handleCopyLink} variant="outline" size="sm">
+                <Copy className="mr-2 h-4 w-4" />
+                লিংক কপি করুন
+            </Button>
+          </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4 mb-8 text-sm text-foreground/80">
             {metadataItems.map((item, index) => (
