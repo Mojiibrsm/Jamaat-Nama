@@ -13,9 +13,8 @@ export default function Home() {
   const [selectedLocation, setSelectedLocation] = useState('সব');
   const [selectedOffender, setSelectedOffender] = useState('সব');
 
-  const categories = useMemo(() => ['সব', ...new Set(articles.map(a => a.category))], []);
-  const locations = useMemo(() => ['সব', ...new Set(articles.map(a => a.location))], []);
-  // A more robust way would be to have a predefined list of offenders
+  const categories = useMemo(() => ['সব', 'খুন', 'ধর্ষণ', 'চাঁদাবাজি', 'হামলা / সংঘর্ষ', 'লুটপাট', 'দখল', 'ইসলামবিদ্বেষ', 'মাদক', 'সন্ত্রাস', 'দুর্নীতি', 'সাইবার অপরাধ'], []);
+  const locations = useMemo(() => ['সব', 'ঢাকা', 'চট্টগ্রাম', 'রাজশাহী', 'খুলনা', 'সিলেট', 'বরিশাল', 'রংপুর', 'ময়মনসিংহ', 'গাজীপুর', 'নারায়ণগঞ্জ', 'কুমিল্লা', 'যশোর', 'দিনাজপুর', 'বগুড়া'], []);
   const offenders = ['সব', 'জামায়াত', 'শিবির', 'বিএনপি', 'আওয়ামী লীগ', 'অন্যান্য'];
 
 
@@ -24,7 +23,7 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         <Hero />
-        <SearchSection 
+        <CrimeCategoryGrid 
           searchTerm={searchTerm} 
           setSearchTerm={setSearchTerm}
           selectedCategory={selectedCategory}
@@ -37,7 +36,6 @@ export default function Home() {
           setSelectedOffender={setSelectedOffender}
           offenders={offenders}
         />
-        <CrimeCategoryGrid />
         <NewsFeed 
           articles={articles} 
           searchTerm={searchTerm}
