@@ -1,4 +1,5 @@
 'use client';
+import { usePathname } from 'next/navigation';
 import { ProtectedAdminLayout } from '@/components/admin/protected-admin-layout';
 import { AdminSidebar } from '@/components/admin/admin-sidebar';
 
@@ -7,6 +8,12 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+
+  if (pathname === '/admin/login') {
+    return <>{children}</>;
+  }
+
   return (
     <ProtectedAdminLayout>
       <div className="flex min-h-screen w-full flex-col bg-muted/40">
