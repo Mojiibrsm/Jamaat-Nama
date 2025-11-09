@@ -1,7 +1,7 @@
 
 'use client';
 
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import Image from 'next/image';
 import { Article } from '@/lib/data';
 import { Badge } from '@/components/ui/badge';
@@ -38,8 +38,11 @@ async function getArticle(firestore: any, category: string, slug: string): Promi
     return foundArticle;
 }
 
-export default function PrintArticlePage({ params }: { params: { category: string, slug: string } }) {
-  const { category, slug } = params;
+export default function PrintArticlePage() {
+  const params = useParams();
+  const category = typeof params.category === 'string' ? params.category : '';
+  const slug = typeof params.slug === 'string' ? params.slug : '';
+
   const firestore = useFirestore();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);

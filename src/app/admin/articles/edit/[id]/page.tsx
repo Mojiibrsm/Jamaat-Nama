@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { notFound, useRouter } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useFirestore } from '@/firebase/provider';
 import { doc, getDoc } from 'firebase/firestore';
@@ -18,8 +18,9 @@ async function getArticle(firestore: any, id: string): Promise<Article | null> {
   return null;
 }
 
-export default function EditArticlePage({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default function EditArticlePage() {
+  const params = useParams();
+  const id = typeof params.id === 'string' ? params.id : '';
   const firestore = useFirestore();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
