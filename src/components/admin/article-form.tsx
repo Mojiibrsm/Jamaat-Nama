@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,6 +29,7 @@ import { CalendarIcon, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "../ui/calendar";
 import { districts } from "@/lib/districts";
+import { useCategories } from "@/hooks/use-categories";
 
 const formSchema = z.object({
   title: z.string().min(10, { message: "শিরোনাম কমপক্ষে ১০ অক্ষরের হতে হবে।" }),
@@ -54,7 +56,6 @@ const formSchema = z.object({
 
 type ArticleFormValues = z.infer<typeof formSchema>;
 
-const categories = ['খুন', 'ধর্ষণ', 'চাঁদাবাজি', 'হামলা / সংঘর্ষ', 'লুটপাট', 'দখল', 'ইসলামবিদ্বেষ', 'মাদক', 'সন্ত্রাস', 'দুর্নীতি', 'সাইবার অপরাধ', 'নারী নির্যাতন', 'অন্যান্য'];
 const offenders = ['জামায়াত', 'শিবির', 'অন্যান্য'];
 
 interface ArticleFormProps {
@@ -68,6 +69,8 @@ export function ArticleForm({ initialData }: ArticleFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isOtherOffender = !offenders.includes(initialData?.offender || '');
   const [isSlugManuallyChanged, setIsSlugManuallyChanged] = useState(false);
+  const { categories, loading: categoriesLoading } = useCategories();
+
 
   const defaultValues: Partial<ArticleFormValues> = {
       title: initialData?.title || "",
@@ -202,14 +205,14 @@ export function ArticleForm({ initialData }: ArticleFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>ক্যাটাগরি</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} defaultValue={field.value} disabled={categoriesLoading}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="একটি ক্যাটাগরি নির্বাচন করুন" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {categories.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}
+                      {categories.map(cat => <SelectItem key={cat.id} value={cat.name}>{cat.name}</SelectItem>)}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -402,5 +405,3 @@ export function ArticleForm({ initialData }: ArticleFormProps) {
     </Form>
   );
 }
-
-    

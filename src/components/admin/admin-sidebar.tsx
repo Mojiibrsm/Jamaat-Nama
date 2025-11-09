@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
-import { Home, Newspaper, Settings, FileText, LogOut } from 'lucide-react';
+import { Home, Newspaper, Settings, FileText, LogOut, Tags } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/firebase/provider';
 import { signOut } from 'firebase/auth';
@@ -14,6 +14,7 @@ const navItems = [
   { href: '/admin', icon: Home, label: 'ড্যাশবোর্ড' },
   { href: '/admin/articles', icon: Newspaper, label: 'সংবাদ পরিচালনা' },
   { href: '/admin/submissions', icon: FileText, label: 'জমা পড়া খবর' },
+  { href: '/admin/categories', icon: Tags, label: 'ক্যাটাগরি পরিচালনা' },
 ];
 
 export function AdminSidebar() {
@@ -54,8 +55,8 @@ export function AdminSidebar() {
                   href={item.href}
                   className={cn(
                     'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8',
-                    pathname.startsWith(item.href) && item.href !== '/admin' && 'bg-accent text-accent-foreground',
-                    pathname === '/admin' && item.href === '/admin' && 'bg-accent text-accent-foreground'
+                    (pathname.startsWith(item.href) && item.href !== '/admin') && 'bg-accent text-accent-foreground',
+                    (pathname === item.href) && 'bg-accent text-accent-foreground'
                   )}
                 >
                   <item.icon className="h-5 w-5" />
