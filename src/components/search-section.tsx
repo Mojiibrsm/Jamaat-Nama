@@ -63,7 +63,7 @@ export function SearchSection({
                 <SelectValue placeholder="ক্যাটাগরি" />
               </SelectTrigger>
               <SelectContent>
-                {categories.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}
+                {categories.map(cat => cat && <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}
               </SelectContent>
             </Select>
             <Select value={selectedLocation} onValueChange={setSelectedLocation}>
@@ -71,7 +71,7 @@ export function SearchSection({
                 <SelectValue placeholder="স্থান" />
               </SelectTrigger>
               <SelectContent>
-                {locations.map(loc => <SelectItem key={loc} value={loc}>{loc}</SelectItem>)}
+                {locations.map(loc => loc && <SelectItem key={loc} value={loc}>{loc}</SelectItem>)}
               </SelectContent>
             </Select>
             <Select value={selectedOffender} onValueChange={setSelectedOffender}>
@@ -79,7 +79,7 @@ export function SearchSection({
                 <SelectValue placeholder="অভিযুক্ত" />
               </SelectTrigger>
               <SelectContent>
-                {offenders.map(off => <SelectItem key={off} value={off}>{off}</SelectItem>)}
+                {offenders.map(off => off && <SelectItem key={off} value={off}>{off}</SelectItem>)}
               </SelectContent>
             </Select>
             <Button onClick={handleSearchClick} className="h-12 rounded-full shadow-lg text-base font-bold">

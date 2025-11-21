@@ -29,9 +29,9 @@ function SearchResults() {
     setSelectedOffender(searchParams.get('offender') || 'সব');
   }, [searchParams]);
 
-  const categories = useMemo(() => ['সব', ...new Set(articles.map(a => a.category))], [articles]);
-  const locations = useMemo(() => ['সব', ...new Set(articles.map(a => a.location))], [articles]);
-  const offenders = useMemo(() => ['সব', ...new Set(articles.map(a => a.offender))], [articles]);
+  const categories = useMemo(() => ['সব', ...new Set(articles.map(a => a.category).filter(Boolean))], [articles]);
+  const locations = useMemo(() => ['সব', ...new Set(articles.map(a => a.location).filter(Boolean))], [articles]);
+  const offenders = useMemo(() => ['সব', ...new Set(articles.map(a => a.offender).filter(Boolean))], [articles]);
 
 
   const handleSearch = (newSearchState: { term: string; category: string; location: string; offender: string }) => {
